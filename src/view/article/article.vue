@@ -1,6 +1,6 @@
 <template>
   <div class="article">
-    <x-header title="文章详情"></x-header>
+    <x-header class="header" title="文章详情"></x-header>
     <h3 class="art-title">{{title}}</h3>
     <div class="art-content"
       v-html="content"></div>

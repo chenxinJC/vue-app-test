@@ -9,6 +9,9 @@ import echarts from 'echarts'
 // import apiConfig from '../config/api.config'
 
 import 'assets/styles/reset.css'
+import 'assets/styles/border.css'
+import 'assets/styles/index.scss'
+import 'swiper/dist/css/swiper.min.css'
 
 Vue.config.productionTip = false
 Vue.prototype.$echarts = echarts

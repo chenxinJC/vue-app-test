@@ -81,11 +81,11 @@ const webpackConfig = {
           limit: 10000,
           name: utils.assetsPath('fonts/[name].[hash:7].[ext]')
         }
-      },
-      {  //编译识别sass!
-        test: /\.scss$/,
-        loaders: ["style", "css", "sass"]
       }
+      // {  //编译识别sass!
+        // test: /\.scss$/,
+        // loaders: ["style", "css", "sass"]
+      // }
     ]
   },
   node: {
