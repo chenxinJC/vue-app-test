@@ -64,16 +64,17 @@ export default {
     align-items: center;
     width: 94%;
     transform-style: preserve-3d;
-    opacity: 0.5;
     &.swiper-slide-active {
-      opacity: 1;
       img {
+        opacity: 1;
         box-shadow: 0 2px 6px rgba(0, 0, 0, 0.36);
       }
     }
     img {
       width: 92%;
       border-radius: 4px;
+      opacity: 0.5;
+      transition: all 0.8s;
     }
   }
   .swiper-pagination {
