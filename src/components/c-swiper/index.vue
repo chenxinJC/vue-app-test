@@ -1,5 +1,5 @@
 <template>
-  <div class="swiper-container">
+  <div class="swiper-container c-swiper">
     <div class="swiper-wrapper">
       <div class="swiper-slide"
         v-for="(item, index) in swiperDatas"
@@ -29,7 +29,7 @@ export default {
     }
   },
   mounted () {
-    let mySwiper = new Swiper('.swiper-container', this.options)
+    let mySwiper = new Swiper('.c-swiper', this.options)
     this.cSwiper = mySwiper
   },
   activated () {
@@ -40,7 +40,7 @@ export default {
   },
   methods: {
     _startSwiper () {
-      // this.cSwiper.autoplay.start()
+      this.cSwiper.autoplay.start()
     },
     _stopSwiper () {
       this.cSwiper.autoplay.stop()
@@ -51,17 +51,16 @@ export default {
 
 <style lang="scss" scoped>
 .swiper-container {
-  margin-top: 44px;
+  margin-top: 54px;
   display: flex;
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: 150px;
   perspective: 800px;
   .swiper-slide {
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
     width: 94%;
     transform-style: preserve-3d;
     &.swiper-slide-active {

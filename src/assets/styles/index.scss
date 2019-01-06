@@ -1,5 +1,11 @@
 @import './color.scss';
-#app .header{
+
+body,
+html {
+  background: #f6f6f6;
+}
+
+#app .header {
   position: fixed;
   top: 0;
   left: 0;
