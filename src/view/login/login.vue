@@ -109,6 +109,10 @@ export default {
 
 <style lang="scss" scoped>
 @import "src/assets/styles/color.scss";
+body,
+/deep/ html {
+  background: #fff !important;
+}
 .form /deep/ {
   .weui-cells:before,
   .weui-cells:after,
@@ -132,7 +136,7 @@ export default {
   }
 }
 .logo {
-  margin-top: 20%;
+  padding-top: 20%;
   display: flex;
   flex-direction: row;
   justify-content: center;

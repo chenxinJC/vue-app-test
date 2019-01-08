@@ -4,7 +4,7 @@
       <div class="swiper-slide"
         v-for="(item, index) in datas"
         :key="index">
-        <img :src="item.url"
+        <img :src="item.imgUrl"
           alt="">
         <p class="title">{{item.title}}</p>
       </div>
@@ -35,9 +35,15 @@ export default {
       }
     }
   },
-  mounted () {
-    let mySwiper = new Swiper('.sqa', this.options)
-    this.quickAccess = mySwiper
+  methods: {
+    initSwiper () {
+      this.$nextTick(() => {
+        if (this.datas.length > 0) {
+          let mySwiper = new Swiper('.sqa', this.options)
+          this.quickAccess = mySwiper
+        }
+      })
+    }
   }
 }
 </script>

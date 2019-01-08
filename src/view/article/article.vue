@@ -1,6 +1,7 @@
 <template>
   <div class="article">
-    <x-header class="header" title="文章详情"></x-header>
+    <x-header class="header"
+      title="文章详情"></x-header>
     <h3 class="art-title">{{title}}</h3>
     <div class="art-content"
       v-html="content"></div>
@@ -26,7 +27,7 @@ export default {
   },
   methods: {
     getData () {
-      getArticle().then((res) => {
+      getArticle().then(res => {
         console.log(res)
         let data = res.data.data
         this.title = data.article_title

@@ -8,8 +8,7 @@ import echarts from 'echarts'
 // import axios from 'axios'
 // import apiConfig from '../config/api.config'
 
-import 'assets/styles/reset.css'
-import 'assets/styles/border.css'
+import 'assets/styles/font-awesome.min.css'
 import 'assets/styles/index.scss'
 import 'swiper/dist/css/swiper.min.css'
 

@@ -4,7 +4,7 @@
       <div class="swiper-slide"
         v-for="(item, index) in swiperDatas"
         :key="index">
-        <img :src="item.url"
+        <img :src="item.imgUrl"
           alt="">
       </div>
     </div>
@@ -29,20 +29,31 @@ export default {
     }
   },
   mounted () {
-    let mySwiper = new Swiper('.c-swiper', this.options)
-    this.cSwiper = mySwiper
+    this.initSwiper()
   },
   activated () {
-    this._startSwiper()
+    if (this.swiperDatas.length > 0) {
+      this.startSwiper()
+    }
   },
   deactivated () {
-    this._stopSwiper()
+    if (this.swiperDatas.length > 0) {
+      this.stopSwiper()
+    }
   },
   methods: {
-    _startSwiper () {
+    initSwiper () {
+      this.$nextTick(() => {
+        if (this.swiperDatas.length > 0) {
+          let mySwiper = new Swiper('.c-swiper', this.options)
+          this.cSwiper = mySwiper
+        }
+      })
+    },
+    startSwiper () {
       this.cSwiper.autoplay.start()
     },
-    _stopSwiper () {
+    stopSwiper () {
       this.cSwiper.autoplay.stop()
     }
   }
@@ -51,7 +62,6 @@ export default {
 
 <style lang="scss" scoped>
 .swiper-container {
-  margin-top: 54px;
   display: flex;
   justify-content: center;
   align-items: center;
