@@ -60,7 +60,7 @@ import CListTwo from 'components/c-list/c-list_2'
 import { removeToken, removeUuid } from '@/utils/auto'
 import { getBanner, getQuickAccess } from 'api/home'
 import { getCourse } from 'api/course'
-import { setTimeout } from 'timers';
+import { getArticle } from 'api/article'
 export default {
   name: 'home',
   components: {
@@ -146,6 +146,9 @@ export default {
   },
   methods: {
     getData () {
+      getArticle().then(res => {
+        console.log(res)
+      })
       this.loading = true
       Promise.all([getBanner(), getQuickAccess(), getCourse()]).then(res => {
         console.log(res)
