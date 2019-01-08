@@ -37,7 +37,6 @@ export default {
     }
   },
   mounted () {
-    console.log(66, this.list)
   },
   methods: {
     getMaxList (array) {

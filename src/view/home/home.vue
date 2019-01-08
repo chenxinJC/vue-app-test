@@ -2,36 +2,46 @@
   <div class="home">
     <x-header class="header"
       title="首页"
-      :left-options="{showBack: false}"></x-header>
-    <c-swiper class="banner"
-      ref="banner"
-      :options="bannerOption"
-      :swiper-datas="banner"></c-swiper>
-    <div class="quick-access">
-      <quick-access ref="quickAccess"
-        :datas="quickAccess">
-      </quick-access>
+      :style="backStyle"
+      :left-options="{showBack: false}">
+      <i class="fa fa-search"
+        slot="right"></i>
+    </x-header>
+    <div class="loading"
+      v-show="loading">
+      <c-loading></c-loading>
     </div>
-    <div class="hot-recommend recommend">
-      <div class="top">
-        <h3>热门推荐</h3>
-        <p class="more">查看更多</p>
+    <div v-show="!loading">
+      <c-swiper class="banner"
+        ref="banner"
+        :options="bannerOption"
+        :swiper-datas="banner"></c-swiper>
+      <div class="quick-access">
+        <quick-access ref="quickAccess"
+          :datas="quickAccess">
+        </quick-access>
       </div>
-      <c-list-one :list="hotRecommendList"></c-list-one>
-    </div>
-    <div class="latest-course recommend">
-      <div class="top">
-        <h3>最新课程</h3>
-        <p class="more">查看更多</p>
+      <div class="hot-recommend recommend">
+        <div class="top">
+          <h3>热门推荐</h3>
+          <p class="more">查看更多</p>
+        </div>
+        <c-list-one :list="hotRecommendList"></c-list-one>
       </div>
-      <c-list-one :list="hotRecommendList"></c-list-one>
-    </div>
-    <div class="article-recommend recommend">
-      <div class="top">
-        <h3>推荐文章</h3>
-        <p class="more">查看更多</p>
+      <div class="latest-course recommend">
+        <div class="top">
+          <h3>最新课程</h3>
+          <p class="more">查看更多</p>
+        </div>
+        <c-list-one :list="hotRecommendList"></c-list-one>
       </div>
-      <c-list-two :list="articleRecommendList"></c-list-two>
+      <div class="article-recommend recommend">
+        <div class="top">
+          <h3>推荐文章</h3>
+          <p class="more">查看更多</p>
+        </div>
+        <c-list-two :list="articleRecommendList"></c-list-two>
+      </div>
     </div>
     <!-- <grid></grid> -->
     <p @click="logout">登出</p>
@@ -42,6 +52,7 @@
 <script>
 import { XHeader } from 'vux'
 import CSwiper from 'components/c-swiper'
+import CLoading from 'components/c-loading'
 import QuickAccess from './components/quickAccess'
 import CListOne from 'components/c-list/c-list_1'
 import CListTwo from 'components/c-list/c-list_2'
@@ -49,9 +60,11 @@ import CListTwo from 'components/c-list/c-list_2'
 import { removeToken, removeUuid } from '@/utils/auto'
 import { getBanner, getQuickAccess } from 'api/home'
 import { getCourse } from 'api/course'
+import { setTimeout } from 'timers';
 export default {
   name: 'home',
   components: {
+    CLoading,
     XHeader,
     CSwiper,
     QuickAccess,
@@ -60,6 +73,11 @@ export default {
   },
   data () {
     return {
+      loading: false,
+      backStyle: {
+        color: '#3a3a3a',
+        background: 'rgba(65, 184, 131, 1)'
+      },
       bannerOption: {
         direction: 'horizontal',
         effect: 'coverflow',
@@ -116,47 +134,28 @@ export default {
   },
   activated () {
     document.body.setAttribute('class', 'f6f6f6')
+    window.addEventListener('scroll', this.handleScroll)
   },
   deactivated () {
     document.body.removeAttribute('class', 'f6f6f6')
+    window.removeEventListener('scroll', this.handleScroll)
   },
   mounted () {
     this.getData()
+    this.handleScroll()
   },
   methods: {
     getData () {
-      Promise.all([getBanner(), getQuickAccess()]).then(res => {
+      this.loading = true
+      Promise.all([getBanner(), getQuickAccess(), getCourse()]).then(res => {
         console.log(res)
+        this.loading = false
         this.banner = res[0].data.list
         this.quickAccess = res[1].data.list
+        this.hotRecommendList = res[2].data.list
         this.$refs.banner.initSwiper()
         this.$refs.quickAccess.initSwiper()
       })
-      getCourse()
-    },
-    _getCourse () {
-      // getCourse().then(res => {
-      //   let list = res.data.list
-      //   this.gc = list
-      //   let aryID = []
-      //   let newAry = []
-      //   list.forEach(val => {
-      //     aryID.push(val.id)
-      //   })
-      //   aryID.forEach(val => {
-      //     newAry.push(['course_key', '=', val])
-      //   })
-      //   return getCourseBuyUser(newAry)
-      // }).then(res => {
-      //   let data = this.gc
-      //   for (let i = 0; i < data.length; i++) {
-      //     data[i]['follow'] = []
-      //     for (let j = 0; j < res.data.list.length; j++) {
-      //       data[i].follow.push(res.data.list[j])
-      //     }
-      //   }
-      //   this.hotRecommendList = data
-      // })
     },
     logout () {
       removeToken()
@@ -167,17 +166,39 @@ export default {
     },
     goArticle () {
       this.$router.push({ path: '/article' })
+    },
+    handleScroll () {
+      const top = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0
+      this.backStyle.color = top > 10 ? '#fff' : '#3a3a3a'
+      this.backStyle.background = top > 10 ? '#41b883' : 'transparent'
+      // let opacity = top / 10
+      // opacity = opacity > 1 ? 1 : opacity
+      // this.backStyle.background = `rgba(65, 184, 131, ${opacity})`
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
+@import "src/assets/styles/mixins.scss";
 .header {
-  background: #f6f6f6 !important;
-  /deep/ .vux-header-title {
-    color: #3a3a3a;
+  transition: all 0.3s;
+  /deep/ .vux-header-title,
+  /deep/ .vux-header-right {
+    font-weight: 700;
+    color: inherit;
   }
+  .fa {
+    font-size: 20px;
+  }
+}
+.loading {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  @include flex-center;
 }
 .banner {
   height: 150px;

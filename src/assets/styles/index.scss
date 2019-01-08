@@ -2,6 +2,7 @@
 @import './reset.css';
 @import './border.css';
 @import './color.scss';
+@import './mixins.scss';
 
 body{
   width: 100%;
@@ -19,4 +20,18 @@ body{
   right: 0;
   z-index: 100;
   background: $default_color;
+}
+
+.header.vux-header .vux-header-left{
+  width: 44px;
+  top: 3px;
+  height: 40px;
+  @include flex-left;
+}
+
+.header.vux-header .vux-header-right{
+  width: 44px;
+  top: 3px;
+  height: 40px;
+  @include flex-right;
 }
