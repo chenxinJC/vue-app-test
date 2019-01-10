@@ -110,6 +110,7 @@ export default {
 
 <style lang="scss" scoped>
 @import "src/assets/styles/color.scss";
+@import "src/assets/styles/mixins.scss";
 body,
 /deep/ html {
   background: #fff !important;
@@ -142,18 +143,18 @@ body,
   flex-direction: row;
   justify-content: center;
   img {
-    width: 100px;
-    height: 100px;
+    width: px2rem(100);
+    height: px2rem(100);
   }
 }
 .form {
-  margin: 64px auto 0;
+  margin: px2rem(64) auto 0;
   width: 80%;
   .input {
-    margin-top: 20px;
+    margin-top: px2rem(20);
   }
   .sign-in {
-    margin-top: 20px;
+    margin-top: px2rem(20);
   }
 }
 .showpw {
@@ -161,11 +162,11 @@ body,
   vertical-align: middle;
   justify-content: center;
   align-items: center;
-  width: 24px;
-  height: 24px;
+  width: px2rem(24);
+  height: px2rem(24);
   i {
     display: block;
-    font-size: 22px;
+    font-size: px2rem(22);
   }
 }
 .icon {
@@ -173,22 +174,21 @@ body,
   vertical-align: middle;
   justify-content: center;
   align-items: center;
-  width: 24px;
-  height: 24px;
-  margin-right: 15px;
+  width: px2rem(24);
+  height: px2rem(24);
+  margin-right: px2rem(15);
   i {
     display: block;
-    font-size: 24px;
+    font-size: px2rem(24);
   }
 }
 .btn-loading {
-  display: inline-block;
-  height: 20px;
-  line-height: 20px;
-  font-size: 14px;
+  height: px2rem(16);
+  line-height: px2rem(16);
+  font-size: px2rem(14);
   img {
-    height: 20px;
-    margin-right: 8px;
+    height: px2rem(16);
+    margin-right: px2rem(8);
     vertical-align: middle;
   }
 }

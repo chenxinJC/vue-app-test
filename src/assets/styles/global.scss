@@ -41,4 +41,34 @@ body {
       @include flex-right;
     }
   }
+  .weui-cell{
+    height: px2rem(24);
+    line-height: px2rem(24);
+    padding: px2rem(10) px2rem(15);
+    font-size: px2rem(16);
+  }
+  .weui-input{
+    height: px2rem(24);
+    line-height: px2rem(24);
+  }
+  .weui-btn{
+    @include flex-center;
+    height: px2rem(44);
+    line-height: px2rem(44);
+    font-size: px2rem(16);
+  }
+  [class^="weui-icon-"]:before, [class*=" weui-icon-"]:before{
+    width: px2rem(14);
+    height: px2rem(14);
+    font-size: px2rem(14);
+  }
+  .vux-x-input .weui-icon{
+    padding-left: px2rem(5);
+  }
+  .vux-x-input .vux-input-icon{
+    font-size: px2rem(20);
+  }
+  .vux-input-icon.weui-icon-warn:before, .vux-input-icon.weui-icon-success:before{
+    font-size: px2rem(20);
+  }
 }
