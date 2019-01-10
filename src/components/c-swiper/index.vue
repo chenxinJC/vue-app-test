@@ -61,37 +61,37 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "assets/styles/mixins.scss";
 .swiper-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  @include flex-center;
   width: 100%;
-  perspective: 800px;
+  perspective: px2rem(800);
   .swiper-slide {
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
+    @include flex-center;
+    opacity: 0.5;
     width: 94%;
     transform-style: preserve-3d;
+    // top: px2rem(12);
+    transition: all 3s;
     &.swiper-slide-active {
+      opacity: 1;
+      // top: 0;
       img {
-        opacity: 1;
         box-shadow: 0 2px 6px rgba(0, 0, 0, 0.36);
       }
     }
     img {
       width: 92%;
       border-radius: 4px;
-      opacity: 0.5;
       transition: all 0.8s;
     }
   }
   .swiper-pagination {
-    bottom: 2px;
+    bottom: px2rem(2);
   }
 }
 /deep/ .swiper-pagination-bullet {
-  width: 4px;
-  height: 4px;
+  width: px2rem(4);
+  height: px2rem(4);
 }
 </style>

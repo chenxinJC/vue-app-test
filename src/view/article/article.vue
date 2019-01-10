@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import { getArticle } from 'api/article'
+import { getArticleDetails } from 'api/article'
 import { XHeader } from 'vux'
 export default {
   name: 'echarts',
@@ -27,7 +27,7 @@ export default {
   },
   methods: {
     getData () {
-      getArticle().then(res => {
+      getArticleDetails().then(res => {
         console.log(res)
         let data = res.data.data
         this.title = data.article_title

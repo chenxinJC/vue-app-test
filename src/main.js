@@ -9,7 +9,7 @@ import echarts from 'echarts'
 // import apiConfig from '../config/api.config'
 
 import 'assets/styles/font-awesome.min.css'
-import 'assets/styles/index.scss'
+import 'assets/styles/global.scss'
 import 'swiper/dist/css/swiper.min.css'
 
 Vue.config.productionTip = false

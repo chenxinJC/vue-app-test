@@ -1,0 +1,44 @@
+@import './reset.css';
+@import './border.css';
+@import './color.scss';
+@import './mixins.scss';
+
+body {
+  width: 100%;
+  min-height: 100%;
+  background: #fff;
+
+  &.f6f6f6 {
+    background: #f6f6f6;
+  }
+
+  .vux-header {
+    padding: px2rem(3) 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    background: $default_color;
+
+    .vux-header-title {
+      height: px2rem(40);
+      line-height: px2rem(40);
+      font-size: px2rem(18);
+    }
+
+    .vux-header-left {
+      width: px2rem(44);
+      top: px2rem(3);
+      height: px2rem(40);
+      @include flex-left;
+    }
+
+    .vux-header-right {
+      width: px2rem(44);
+      top: px2rem(3);
+      height: px2rem(40);
+      @include flex-right;
+    }
+  }
+}

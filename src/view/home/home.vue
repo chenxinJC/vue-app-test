@@ -7,20 +7,24 @@
       <i class="fa fa-search"
         slot="right"></i>
     </x-header>
+
     <div class="loading"
       v-show="loading">
       <c-loading></c-loading>
     </div>
+
     <div v-show="!loading">
       <c-swiper class="banner"
         ref="banner"
         :options="bannerOption"
         :swiper-datas="banner"></c-swiper>
+
       <div class="quick-access">
         <quick-access ref="quickAccess"
           :datas="quickAccess">
         </quick-access>
       </div>
+
       <div class="hot-recommend recommend">
         <div class="top">
           <h3>热门推荐</h3>
@@ -28,6 +32,7 @@
         </div>
         <c-list-one :list="hotRecommendList"></c-list-one>
       </div>
+
       <div class="latest-course recommend">
         <div class="top">
           <h3>最新课程</h3>
@@ -35,6 +40,7 @@
         </div>
         <c-list-one :list="hotRecommendList"></c-list-one>
       </div>
+
       <div class="article-recommend recommend">
         <div class="top">
           <h3>推荐文章</h3>
@@ -42,6 +48,7 @@
         </div>
         <c-list-two :list="articleRecommendList"></c-list-two>
       </div>
+
     </div>
     <!-- <grid></grid> -->
     <p @click="logout">登出</p>
@@ -61,6 +68,7 @@ import { removeToken, removeUuid } from '@/utils/auto'
 import { getBanner, getQuickAccess } from 'api/home'
 import { getCourse } from 'api/course'
 import { getArticle } from 'api/article'
+import { fs } from 'utils/asd'
 export default {
   name: 'home',
   components: {
@@ -76,7 +84,7 @@ export default {
       loading: false,
       backStyle: {
         color: '#3a3a3a',
-        background: 'rgba(65, 184, 131, 1)'
+        background: 'transparent'
       },
       bannerOption: {
         direction: 'horizontal',
@@ -86,19 +94,32 @@ export default {
         slidesPerView: 'auto',
         watchSlidesProgress: true,
         coverflowEffect: {
-          //   rotate: 0,
-          //   stretch: 0,
-          depth: 200,
-          //   modifier: 2,
+          // rotate: 0,
+          stretch: 0,
+          depth: fs(200),
+          modifier: 1,
           slideShadows: false
         },
         autoplay: {
           disableOnInteraction: false,
-          delay: 1000
+          delay: 11111000
         },
         loop: true,
         pagination: {
           el: '.swiper-pagination'
+        },
+        on: {
+          progress: function () {
+            for (let i = 0; i < this.slides.length; i++) {
+              let slide = this.slides[i]
+              let progress = slide.progress
+              console.log(1111, this.realIndex)
+              console.log(2222, slide.realIndex)
+              let es = slide.style
+              es.opacity = Math.round((1 - Math.min(Math.abs(progress / 2), 1)) * 10) / 10
+              es.top = Math.round(progress) === 0 ? Math.round(progress) : fs(10) + 'px'
+            }
+          }
         },
         observer: true,
         observeParents: true
@@ -106,30 +127,7 @@ export default {
       banner: [],
       quickAccess: [],
       hotRecommendList: [],
-      articleRecommendList: [
-        {
-          imgUrl: '//bpic.588ku.com/back_pic/05/77/43/695bf273dad8864.jpg!/fh/300/quality/90/unsharp/true/compress/true',
-          title: '新年就发了我感觉',
-          userImg: 'https://assets.jikexueyuan.com/user/avatar/57/30/3291752.jpeg',
-          userName: '方格',
-          agreeState: false,
-          agreeNum: 34,
-          collectState: false,
-          collectNum: 99,
-          comment: 53
-        },
-        {
-          imgUrl: '//bpic.588ku.com/back_pic/05/77/43/695bf273dad8864.jpg!/fh/300/quality/90/unsharp/true/compress/true',
-          title: '新年就发了我感觉',
-          userImg: 'https://assets.jikexueyuan.com/user/avatar/57/30/3291752.jpeg',
-          userName: '方格',
-          agreeState: false,
-          agreeNum: 34,
-          collectState: false,
-          collectNum: 99,
-          comment: 53
-        }
-      ]
+      articleRecommendList: []
     }
   },
   activated () {
@@ -146,16 +144,14 @@ export default {
   },
   methods: {
     getData () {
-      getArticle().then(res => {
-        console.log(res)
-      })
       this.loading = true
-      Promise.all([getBanner(), getQuickAccess(), getCourse()]).then(res => {
+      Promise.all([getBanner(), getQuickAccess(), getCourse(), getArticle()]).then(res => {
         console.log(res)
         this.loading = false
         this.banner = res[0].data.list
         this.quickAccess = res[1].data.list
         this.hotRecommendList = res[2].data.list
+        this.articleRecommendList = res[3].data.list
         this.$refs.banner.initSwiper()
         this.$refs.quickAccess.initSwiper()
       })
@@ -184,15 +180,15 @@ export default {
 
 <style lang="scss" scoped>
 @import "src/assets/styles/mixins.scss";
-.header {
+/deep/ .vux-header {
   transition: all 0.3s;
-  /deep/ .vux-header-title,
-  /deep/ .vux-header-right {
+  .vux-header-title,
+  .vux-header-right {
     font-weight: 700;
     color: inherit;
   }
   .fa {
-    font-size: 20px;
+    font-size: px2rem(20);
   }
 }
 .loading {
@@ -204,21 +200,22 @@ export default {
   @include flex-center;
 }
 .banner {
-  height: 150px;
-  padding-top: 54px;
+  height: px2rem(150);
+  padding-top: px2rem(44);
+  padding-bottom: px2rem(10);
 }
 .recommend {
   .top {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px;
+    padding: px2rem(10);
     h3 {
-      font-size: 16px;
+      font-size: px2rem(16);
       font-weight: 700;
     }
     .more {
-      font-size: 12px;
+      font-size: px2rem(12);
       color: #8a8a8a;
     }
   }

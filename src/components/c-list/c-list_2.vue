@@ -6,10 +6,10 @@
       <img class="item-img"
         :src="item.imgUrl"
         alt="">
-      <h3 class="item-title">{{item.title}}</h3>
+      <h3 class="item-title">{{item.article_title}}</h3>
       <div class="info">
         <div class="user">
-          <img :src="item.userImg"
+          <img :src="item.userImgUrl"
             alt="">
           <p>{{item.userName}}</p>
         </div>
@@ -26,7 +26,7 @@
           </div>
           <div class="icon-wrapper">
             <span class="fa fa-commenting"></span>
-            <span class="num">{{item.comment}}</span>
+            <span class="num">{{item.commentNum}}</span>
           </div>
         </div>
       </div>
@@ -75,6 +75,7 @@ export default {
         color: #8a8a8a;
       .user {
         @include flex-center;
+        font-size: 12px;
         img {
           width: 20px;
           height: 20px;

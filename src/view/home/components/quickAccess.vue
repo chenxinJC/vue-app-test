@@ -49,15 +49,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import 'assets/styles/mixins.scss';
 .swiper-container {
   box-sizing: content-box;
   display: flex;
   justify-content: center;
   align-items: center;
   width: 100%;
-  padding: 10px 0;
+  padding: px2rem(10) 0;
   .swiper-slide {
-    height: 64px;
+    height: px2rem(64);
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -65,10 +66,10 @@ export default {
     background: #fff;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
     img {
-      width: 36px;
+      width: px2rem(36);
     }
     p {
-      font-size: 14px;
+      font-size: px2rem(14);
     }
   }
 }
