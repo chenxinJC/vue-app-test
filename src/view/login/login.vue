@@ -50,6 +50,7 @@
           </span>
           <span v-else>登录</span>
         </x-button>
+        <router-link to="/forgetPassword">忘记密码</router-link>
       </group>
     </div>
   </div>

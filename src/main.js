@@ -16,7 +16,7 @@ Vue.config.productionTip = false
 Vue.prototype.$echarts = echarts
 // axios.defaults.baseURL = apiConfig.baseUrl
 
-const whiteList = ['/login'] // 不重定向白名单
+const whiteList = ['/login', '/forgetPassword', '/register'] // 不重定向白名单
 router.beforeEach((to, from, next) => {
   if (store.getters.token && store.getters.token !== 'undefined') { // 判断是否有token
     if (to.path === '/login') {

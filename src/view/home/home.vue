@@ -53,6 +53,7 @@
     <!-- <grid></grid> -->
     <p @click="logout">登出</p>
     <p @click="goArticle">详情页</p>
+    <!-- <c-tab-bar :list="quickAccess"></c-tab-bar> -->
   </div>
 </template>
 
@@ -63,6 +64,7 @@ import CLoading from 'components/c-loading'
 import QuickAccess from './components/quickAccess'
 import CListOne from 'components/c-list/c-list_1'
 import CListTwo from 'components/c-list/c-list_2'
+import CTabBar from 'components/c-tabBar'
 // import Grid from './components/grid.vue'
 import { removeToken, removeUuid } from '@/utils/auto'
 import { getBanner, getQuickAccess } from 'api/home'
@@ -77,7 +79,8 @@ export default {
     CSwiper,
     QuickAccess,
     CListOne,
-    CListTwo
+    CListTwo,
+    CTabBar
   },
   data () {
     return {
@@ -109,15 +112,14 @@ export default {
           el: '.swiper-pagination'
         },
         on: {
-          progress: function () {
+          progress: function (a) {
+            console.log(a)
             for (let i = 0; i < this.slides.length; i++) {
               let slide = this.slides[i]
               let progress = slide.progress
-              console.log(1111, this.realIndex)
-              console.log(2222, slide.realIndex)
               let es = slide.style
               es.opacity = Math.round((1 - Math.min(Math.abs(progress / 2), 1)) * 10) / 10
-              es.top = Math.round(progress) === 0 ? Math.round(progress) : fs(10) + 'px'
+              es.top = Math.round(Math.abs(progress) * 11) + 'px'
             }
           }
         },
