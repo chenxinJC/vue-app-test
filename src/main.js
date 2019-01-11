@@ -4,7 +4,9 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import store from './store/index'
+// import { GetUserInfo, GetUserStatus } from './store/modules/user'
 import echarts from 'echarts'
+import { ToastPlugin } from 'vux'
 // import axios from 'axios'
 // import apiConfig from '../config/api.config'
 
@@ -16,14 +18,28 @@ Vue.config.productionTip = false
 Vue.prototype.$echarts = echarts
 // axios.defaults.baseURL = apiConfig.baseUrl
 
+Vue.use(ToastPlugin)
+
 const whiteList = ['/login', '/forgetPassword', '/register'] // 不重定向白名单
 router.beforeEach((to, from, next) => {
   if (store.getters.token && store.getters.token !== 'undefined') { // 判断是否有token
     if (to.path === '/login') {
-      next({
-        path: '/'
-      })
+      next({ path: '/' })
     } else {
+      console.log(555, store.getters)
+      console.log(555, store.state.user.rolename)
+      console.log(555, store.getters.uuid)
+      console.log(555, store.getters.roles)
+      if (store.getters.roles.length === 0) {
+        store.dispatch('GetUserInfo').then(res => {
+          console.log(555, store.getters.roles)
+          console.log(333, res)
+        })
+      } else {
+        store.dispatch('GetUserStatus').then(res => {
+          console.log(444, res)
+        })
+      }
       next()
     }
   } else {
@@ -36,7 +52,7 @@ router.beforeEach((to, from, next) => {
 })
 
 /* eslint-disable no-new */
-new Vue({
+export const app = new Vue({
   el: '#app',
   router,
   store,

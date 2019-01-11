@@ -2,7 +2,8 @@ import md5 from 'js-md5'
 import {ERR_OK} from 'api/config'
 import {
   login,
-  getUserInfo
+  getUserInfo,
+  getUserStatus
 } from 'api/login'
 import {
   getToken,
@@ -13,10 +14,7 @@ import {
 
 const user = {
   state: {
-    ext_info: {
-      nickname: '',
-      age: 19
-    },
+    ext_info: {},
     register_ip: '',
     register_time: '',
     role: '',
@@ -28,8 +26,7 @@ const user = {
 
   mutations: {
     SET_EXT_INFO: (state, extInfo) => {
-      state.ext_info.nickname = extInfo.nickname
-      state.ext_info.age = extInfo.age
+      state.ext_info = extInfo
     },
     SET_REGISTER_IP: (state, registerIp) => {
       state.register_ip = registerIp
@@ -73,16 +70,34 @@ const user = {
       })
     },
 
+    // 用户登录状态
+    GetUserStatus ({ commit, state }) {
+      return new Promise((resolve, reject) => {
+        getUserStatus(state.uuid, state.token).then(res => {
+          if (res.data.err_code === ERR_OK) {
+            return false
+          }
+          const data = res.data.info
+          // if (data.role && data.role.length > 0) {
+          // }
+          commit('SET_ROLE', data.role)
+          commit('SET_TOKEN', '')
+          console.log(state.role)
+          resolve(res)
+        }).catch(err => {
+          reject(err)
+        })
+      })
+    },
+
     GetUserInfo ({ commit, state }) {
       return new Promise((resolve, reject) => {
         getUserInfo(state.uuid, state.token).then(res => {
           if (res.data.err_code === ERR_OK) {
             return false
           }
-          const data = res.data.info
-          if (data.role && data.roles.length > 0) {
-            commit('Set_ROLE', data.role)
-          }
+          const data = res.data.data.info
+          commit('SET_ROLE', data.role)
           commit('SET_EXT_INFO', data.exe_info)
           commit('SET_REGISTER_TIME', data.register_time)
           commit('SET_ROLENAME', data.rolename)

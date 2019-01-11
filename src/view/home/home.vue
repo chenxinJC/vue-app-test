@@ -113,7 +113,6 @@ export default {
         },
         on: {
           progress: function (a) {
-            console.log(a)
             for (let i = 0; i < this.slides.length; i++) {
               let slide = this.slides[i]
               let progress = slide.progress

@@ -32,6 +32,20 @@ export function getUserInfo (uuid, token) {
   })
 }
 
+export function getUserStatus (uuid, token) {
+  const data = {
+    s: 'App.User.Check',
+    app_key: APP_KEY,
+    uuid,
+    token
+  }
+  return request({
+    url: 'api/',
+    method: 'post',
+    data: getparams(data)
+  })
+}
+
 export function getparams (data) {
   data.sign = setSign(data)
   let params = new URLSearchParams()

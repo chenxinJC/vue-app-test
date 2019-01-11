@@ -82,9 +82,16 @@ export default {
     signIn () {
       if (this.userInfo.namename !== '' && this.userInfo.password !== '') {
         this.loading = true
+        this.disabled = true
         this.$store.dispatch('Login', this.userInfo).then(() => {
           this.$router.push({ path: '/' })
           this.loading = false
+          this.disabled = false
+        }).catch(() => {
+          setTimeout(() => {
+            this.loading = false
+            this.disabled = false
+          }, 2000)
         })
       }
     },
