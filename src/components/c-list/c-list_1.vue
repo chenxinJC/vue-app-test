@@ -12,7 +12,7 @@
             v-for="(fItem, index) in getMaxList(item.follow)"
             :key="index"
             :src="fItem.userImgUrl"
-            :style="{left: index * 12 + 'px'}">
+            :style="{left: leftFs(index)}">
           <span class="more"
             v-if="item.follow.length > 3">{{item.follow.length}}+</span>
         </div>
@@ -27,6 +27,7 @@
 </template>
 
 <script>
+import { fs } from 'utils/auto'
 export default {
   name: 'c-list',
   props: {
@@ -41,6 +42,9 @@ export default {
   methods: {
     getMaxList (array) {
       return array.length > 3 ? array.slice(0, 3) : array
+    },
+    leftFs (index) {
+      return index * fs(12) + 'px'
     }
   }
 }
@@ -53,29 +57,29 @@ export default {
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
-  padding: 0 10px;
+  padding: 0 px2rem(15);
   .item {
-    flex: 0 0 calc(50% - 5px);
-    width: calc(50% - 5px);
-    margin-bottom: 10px;
+    flex: 0 0 48%;
+    width: 48%;
+    margin-bottom: px2rem(10);
     background: #fff;
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
     .item-img {
       width: 100%;
     }
     .item-title {
-      font-size: 14px;
-      padding: 10px;
+      font-size: px2rem(14);
+      padding: px2rem(10) px2rem(12);
       @include ellipsis;
     }
     .info {
       display: flex;
       justify-content: space-between;
-      height: 24px;
-      padding: 0 6px 10px;
-      font-size: 12px;
+      height: px2rem(24);
+      padding: 0 px2rem(6) px2rem(10);
+      font-size: px2rem(12);
       img {
-        width: 24px;
+        width: px2rem(24);
         border-radius: 50%;
         border: 1px solid #fff;
       }
@@ -87,17 +91,17 @@ export default {
           position: absolute;
         }
         .more {
-          min-width: 24px;
-          height: 24px;
-          padding: 0 4px;
-          border-radius: 12px;
+          min-width: px2rem(24);
+          height: px2rem(24);
+          padding: 0 px2rem(4);
+          border-radius: px2rem(12);
           border: 1px solid #fff;
           text-align: center;
           color: #fff;
-          line-height: 24px;
+          line-height: px2rem(24);
           background: $default_color;
           position: absolute;
-          left: 36px;
+          left: px2rem(36);
         }
       }
       .user {
@@ -105,7 +109,7 @@ export default {
         @include flex-center;
         color: #acacac;
         img {
-          margin-right: 6px;
+          margin-right: px2rem(6);
         }
       }
     }

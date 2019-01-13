@@ -53,7 +53,7 @@
     <!-- <grid></grid> -->
     <p @click="logout">登出</p>
     <p @click="goArticle">详情页</p>
-    <!-- <c-tab-bar :list="quickAccess"></c-tab-bar> -->
+    <c-tab-bar :list="quickAccess"></c-tab-bar>
   </div>
 </template>
 
@@ -70,7 +70,7 @@ import { removeToken, removeUuid } from '@/utils/auto'
 import { getBanner, getQuickAccess } from 'api/home'
 import { getCourse } from 'api/course'
 import { getArticle } from 'api/article'
-import { fs } from 'utils/asd'
+import { bannerSwiperOptions } from './config'
 export default {
   name: 'home',
   components: {
@@ -89,42 +89,7 @@ export default {
         color: '#3a3a3a',
         background: 'transparent'
       },
-      bannerOption: {
-        direction: 'horizontal',
-        effect: 'coverflow',
-        grabCursor: true,
-        centeredSlides: true,
-        slidesPerView: 'auto',
-        watchSlidesProgress: true,
-        coverflowEffect: {
-          // rotate: 0,
-          stretch: 0,
-          depth: fs(200),
-          modifier: 1,
-          slideShadows: false
-        },
-        autoplay: {
-          disableOnInteraction: false,
-          delay: 11111000
-        },
-        loop: true,
-        pagination: {
-          el: '.swiper-pagination'
-        },
-        on: {
-          progress: function (a) {
-            for (let i = 0; i < this.slides.length; i++) {
-              let slide = this.slides[i]
-              let progress = slide.progress
-              let es = slide.style
-              es.opacity = Math.round((1 - Math.min(Math.abs(progress / 2), 1)) * 10) / 10
-              es.top = Math.round(Math.abs(progress) * 11) + 'px'
-            }
-          }
-        },
-        observer: true,
-        observeParents: true
-      },
+      bannerOption: bannerSwiperOptions,
       banner: [],
       quickAccess: [],
       hotRecommendList: [],
@@ -192,6 +157,9 @@ export default {
     font-size: px2rem(20);
   }
 }
+.home{
+  padding-bottom: px2rem(64);
+}
 .loading {
   position: absolute;
   top: 0;
@@ -210,7 +178,7 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: px2rem(10);
+    padding: px2rem(10) px2rem(15);
     h3 {
       font-size: px2rem(16);
       font-weight: 700;

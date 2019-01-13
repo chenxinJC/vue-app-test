@@ -65,25 +65,26 @@ export default {
 .swiper-container {
   @include flex-center;
   width: 100%;
-  perspective: px2rem(800);
+  // perspective: px2rem(800);
   .swiper-slide {
     @include flex-center;
-    opacity: 0.5;
-    width: 94%;
-    transform-style: preserve-3d;
+    overflow: hidden;
+    // opacity: 0.5;
+    width: 90%;
+    // transform-style: preserve-3d;
     // top: px2rem(12);
-    transition: all 3s;
+    // transition: all 3s;
     &.swiper-slide-active {
-      opacity: 1;
+      // opacity: 1;
       // top: 0;
       img {
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.36);
+        // box-shadow: 0 2px 6px rgba(0, 0, 0, 0.36);
       }
     }
     img {
-      width: 92%;
       border-radius: 4px;
-      transition: all 0.8s;
+      height: 90%;
+      // transition: all 0.8s;
     }
   }
   .swiper-pagination {
@@ -91,7 +92,7 @@ export default {
   }
 }
 /deep/ .swiper-pagination-bullet {
-  width: px2rem(4);
-  height: px2rem(4);
+  width: px2rem(6);
+  height: px2rem(6);
 }
 </style>

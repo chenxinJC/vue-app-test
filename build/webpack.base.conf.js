@@ -41,6 +41,7 @@ const webpackConfig = {
       'assets': resolve('src/assets'),
       'base': resolve('src/base'),
       'components': resolve('src/components'),
+      'store': resolve('src/store'),
       'utils': resolve('src/utils'),
       'view': resolve('src/view'),
     }

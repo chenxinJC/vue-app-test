@@ -8,8 +8,13 @@ import {
 import {
   getToken,
   setToken,
+  removeToken,
   getUuid,
-  setUuid
+  setUuid,
+  removeUuid,
+  getRole,
+  setRole,
+  removeRole
 } from 'utils/auto'
 
 const user = {
@@ -17,11 +22,11 @@ const user = {
     ext_info: {},
     register_ip: '',
     register_time: '',
-    role: '',
+    role: getRole() || '',
     rolename: '',
     username: '',
-    uuid: getUuid(),
-    token: getToken()
+    uuid: getUuid() || '',
+    token: getToken() || ''
   },
 
   mutations: {
@@ -61,6 +66,7 @@ const user = {
           let token = res.data.data.token
           let uuid = res.data.data.uuid
           commit('SET_TOKEN', token)
+          commit('SET_UUID', uuid)
           setToken(token)
           setUuid(uuid)
           resolve()
@@ -74,16 +80,17 @@ const user = {
     GetUserStatus ({ commit, state }) {
       return new Promise((resolve, reject) => {
         getUserStatus(state.uuid, state.token).then(res => {
-          if (res.data.err_code === ERR_OK) {
-            return false
+          if (res) {
+            if (res.data.data.err_code === ERR_OK) {
+              return false
+            } else {
+              aaa()
+              resolve(res)
+            }
+          } else {
+            aaa()
+            resolve(res)
           }
-          const data = res.data.info
-          // if (data.role && data.role.length > 0) {
-          // }
-          commit('SET_ROLE', data.role)
-          commit('SET_TOKEN', '')
-          console.log(state.role)
-          resolve(res)
         }).catch(err => {
           reject(err)
         })
@@ -93,16 +100,20 @@ const user = {
     GetUserInfo ({ commit, state }) {
       return new Promise((resolve, reject) => {
         getUserInfo(state.uuid, state.token).then(res => {
-          if (res.data.err_code === ERR_OK) {
-            return false
+          console.log(res)
+          if (res) {
+            if (res.data.err_code === ERR_OK) {
+              return false
+            }
+            const data = res.data.data.info
+            commit('SET_ROLE', data.role)
+            commit('SET_EXT_INFO', data.exe_info)
+            commit('SET_REGISTER_TIME', data.register_time)
+            commit('SET_ROLENAME', data.rolename)
+            commit('SET_USERNAME', data.username)
+            setRole(data.role)
+            resolve(res)
           }
-          const data = res.data.data.info
-          commit('SET_ROLE', data.role)
-          commit('SET_EXT_INFO', data.exe_info)
-          commit('SET_REGISTER_TIME', data.register_time)
-          commit('SET_ROLENAME', data.rolename)
-          commit('SET_USERNAME', data.username)
-          resolve(res)
         }).catch(err => {
           reject(err)
         })
@@ -112,3 +123,20 @@ const user = {
 }
 
 export default user
+
+export function aaa () {
+  console.log(111)
+  user.state = {
+    ext_info: {},
+    register_ip: '',
+    register_time: '',
+    role: '',
+    rolename: '',
+    username: '',
+    uuid: '',
+    token: ''
+  }
+  removeToken()
+  removeUuid()
+  removeRole()
+}

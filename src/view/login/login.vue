@@ -28,6 +28,7 @@
           @on-change="keyDown"
           :type="pwdType"
           placeholder="请输入密码..."
+          autocomplete="off"
           v-model="userInfo.password">
           <span class="icon"
             slot="label">
@@ -50,7 +51,10 @@
           </span>
           <span v-else>登录</span>
         </x-button>
-        <router-link to="/forgetPassword">忘记密码</router-link>
+        <div class="other">
+          <router-link to="/forgetPassword">忘记密码</router-link>
+          <router-link to="/register">用户注册</router-link>
+        </div>
       </group>
     </div>
   </div>
@@ -198,5 +202,12 @@ body,
     margin-right: px2rem(8);
     vertical-align: middle;
   }
+}
+.other {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: px2rem(10);
+  font-size: px2rem(14);
 }
 </style>

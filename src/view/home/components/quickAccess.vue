@@ -15,6 +15,7 @@
 
 <script>
 import Swiper from 'swiper'
+import { fs } from 'utils/auto'
 export default {
   name: 'quick-access',
   components: {
@@ -28,9 +29,9 @@ export default {
       quickAccess: null,
       options: {
         slidesPerView: 4,
-        slidesOffsetBefore: 10,
-        slidesOffsetAfter: 10,
-        spaceBetween: 10,
+        slidesOffsetBefore: fs(15),
+        slidesOffsetAfter: fs(15),
+        spaceBetween: fs(15),
         freeMode: true
       }
     }

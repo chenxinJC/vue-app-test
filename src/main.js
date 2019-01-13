@@ -7,6 +7,7 @@ import store from './store/index'
 // import { GetUserInfo, GetUserStatus } from './store/modules/user'
 import echarts from 'echarts'
 import { ToastPlugin } from 'vux'
+import animate from 'animate.css'
 // import axios from 'axios'
 // import apiConfig from '../config/api.config'
 
@@ -19,6 +20,7 @@ Vue.prototype.$echarts = echarts
 // axios.defaults.baseURL = apiConfig.baseUrl
 
 Vue.use(ToastPlugin)
+Vue.use(animate)
 
 const whiteList = ['/login', '/forgetPassword', '/register'] // 不重定向白名单
 router.beforeEach((to, from, next) => {
@@ -26,18 +28,11 @@ router.beforeEach((to, from, next) => {
     if (to.path === '/login') {
       next({ path: '/' })
     } else {
-      console.log(555, store.getters)
-      console.log(555, store.state.user.rolename)
-      console.log(555, store.getters.uuid)
-      console.log(555, store.getters.roles)
-      if (store.getters.roles.length === 0) {
+      if (store.getters.role === null || store.getters.role === '') {
         store.dispatch('GetUserInfo').then(res => {
-          console.log(555, store.getters.roles)
-          console.log(333, res)
         })
       } else {
         store.dispatch('GetUserStatus').then(res => {
-          console.log(444, res)
         })
       }
       next()

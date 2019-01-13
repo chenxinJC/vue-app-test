@@ -32,6 +32,22 @@ export function getUserInfo (uuid, token) {
   })
 }
 
+export function setUserInfo (uuid, token, userData) {
+  let extInfo = JSON.stringify(userData)
+  const data = {
+    s: 'App.User.Profile',
+    app_key: APP_KEY,
+    ext_info: extInfo,
+    uuid,
+    token
+  }
+  return request({
+    url: 'api/',
+    method: 'post',
+    data: getparams(data)
+  })
+}
+
 export function getUserStatus (uuid, token) {
   const data = {
     s: 'App.User.Check',
