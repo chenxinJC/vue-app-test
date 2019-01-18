@@ -28,9 +28,6 @@
 <script>
 export default {
   name: 'c-tabbar',
-  props: {
-    list: Array
-  },
   data () {
     return {
     }

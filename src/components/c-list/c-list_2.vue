@@ -1,11 +1,13 @@
 <template>
   <div class="container">
     <div class="item"
-      v-for="(item, index) in list"
-      :key="index">
-      <img class="item-img"
-        :src="item.imgUrl"
-        alt="">
+      v-for="item in list"
+      :key="item.id"
+      @click="toLink(item.id)">
+      <div class="item-img">
+        <img :src="item.imgUrl"
+          alt="">
+      </div>
       <h3 class="item-title">{{item.article_title}}</h3>
       <div class="info">
         <div class="user">
@@ -43,6 +45,12 @@ export default {
   data () {
     return {
     }
+  },
+  methods: {
+    toLink (id) {
+      console.log(id)
+      this.$emit('toLink', id)
+    }
   }
 }
 </script>
@@ -60,6 +68,13 @@ export default {
     overflow: hidden;
     .item-img {
       width: 100%;
+      height: px2rem(124);
+      @include flex-center;
+      overflow: hidden;
+      img{
+        width: 100%;
+        min-height: px2rem(124);
+      }
     }
     .item-title {
       font-size: px2rem(14);
@@ -72,7 +87,7 @@ export default {
       justify-content: space-between;
       margin-bottom: px2rem(10);
       padding: 0 px2rem(10);
-        color: #8a8a8a;
+      color: #8a8a8a;
       .user {
         @include flex-center;
         font-size: px2rem(12);

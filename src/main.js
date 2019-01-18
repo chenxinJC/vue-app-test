@@ -4,9 +4,10 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import store from './store/index'
+import Navigation from 'vue-navigation'
 // import { GetUserInfo, GetUserStatus } from './store/modules/user'
 import echarts from 'echarts'
-import { ToastPlugin } from 'vux'
+import { ToastPlugin, ConfirmPlugin } from 'vux'
 import animate from 'animate.css'
 // import axios from 'axios'
 // import apiConfig from '../config/api.config'
@@ -18,9 +19,10 @@ import 'swiper/dist/css/swiper.min.css'
 Vue.config.productionTip = false
 Vue.prototype.$echarts = echarts
 // axios.defaults.baseURL = apiConfig.baseUrl
-
-Vue.use(ToastPlugin)
+Vue.use(Navigation, {router, store})
 Vue.use(animate)
+Vue.use(ToastPlugin)
+Vue.use(ConfirmPlugin)
 
 const whiteList = ['/login', '/forgetPassword', '/register'] // 不重定向白名单
 router.beforeEach((to, from, next) => {
@@ -30,6 +32,7 @@ router.beforeEach((to, from, next) => {
     } else {
       if (store.getters.role === null || store.getters.role === '') {
         store.dispatch('GetUserInfo').then(res => {
+          console.log(111, res.data.data)
         })
       } else {
         store.dispatch('GetUserStatus').then(res => {

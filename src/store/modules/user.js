@@ -1,37 +1,44 @@
 import md5 from 'js-md5'
 import {ERR_OK} from 'api/config'
+import router from '../../router/index'
 import {
   login,
   getUserInfo,
-  getUserStatus
-} from 'api/login'
+  getUserStatus,
+  updateExtInfo
+} from 'api/user'
 import {
+  getUsername,
+  setUsername,
+  getPassword,
+  setPassword,
   getToken,
   setToken,
-  removeToken,
   getUuid,
   setUuid,
-  removeUuid,
   getRole,
   setRole,
-  removeRole
+  getExtInfo,
+  setExtInfo,
+  removeAll
 } from 'utils/auto'
-
+const extInfo = JSON.parse(getExtInfo())
 const user = {
   state: {
-    ext_info: {},
+    ext_info: extInfo || {},
     register_ip: '',
     register_time: '',
     role: getRole() || '',
     rolename: '',
-    username: '',
+    username: getUsername() || '',
+    password: getPassword() || '',
     uuid: getUuid() || '',
     token: getToken() || ''
   },
 
   mutations: {
     SET_EXT_INFO: (state, extInfo) => {
-      state.ext_info = extInfo
+      state.ext_info = Object.assign({}, extInfo)
     },
     SET_REGISTER_IP: (state, registerIp) => {
       state.register_ip = registerIp
@@ -45,14 +52,17 @@ const user = {
     SET_ROLENAME: (state, rolename) => {
       state.rolename = rolename
     },
-    SET_USERNAME: (state, username) => {
-      state.username = username
-    },
     SET_UUID: (state, uuid) => {
       state.uuid = uuid
     },
     SET_TOKEN: (state, token) => {
       state.token = token
+    },
+    SET_USERNAME: (state, username) => {
+      state.username = username
+    },
+    SET_PASSWORD: (state, password) => {
+      state.password = password
     }
   },
 
@@ -67,8 +77,12 @@ const user = {
           let uuid = res.data.data.uuid
           commit('SET_TOKEN', token)
           commit('SET_UUID', uuid)
+          commit('SET_USERNAME', username)
+          commit('SET_PASSWORD', password)
           setToken(token)
           setUuid(uuid)
+          setUsername(username)
+          setPassword(password)
           resolve()
         }).catch(err => {
           reject(err)
@@ -84,12 +98,8 @@ const user = {
             if (res.data.data.err_code === ERR_OK) {
               return false
             } else {
-              aaa()
               resolve(res)
             }
-          } else {
-            aaa()
-            resolve(res)
           }
         }).catch(err => {
           reject(err)
@@ -100,43 +110,50 @@ const user = {
     GetUserInfo ({ commit, state }) {
       return new Promise((resolve, reject) => {
         getUserInfo(state.uuid, state.token).then(res => {
-          console.log(res)
           if (res) {
             if (res.data.err_code === ERR_OK) {
               return false
             }
             const data = res.data.data.info
             commit('SET_ROLE', data.role)
-            commit('SET_EXT_INFO', data.exe_info)
+            commit('SET_EXT_INFO', data.ext_info)
             commit('SET_REGISTER_TIME', data.register_time)
             commit('SET_ROLENAME', data.rolename)
             commit('SET_USERNAME', data.username)
             setRole(data.role)
+            setExtInfo(data.ext_info)
             resolve(res)
           }
         }).catch(err => {
           reject(err)
         })
       })
+    },
+
+    UpdateExtInfo ({ commit, state }, extinfo) {
+      return new Promise((resolve, reject) => {
+        updateExtInfo(state.uuid, state.token, extinfo).then(res => {
+          const data = res.data.data
+          commit('SET_EXT_INFO', data.ext_info)
+          setExtInfo(data.ext_info)
+          resolve(res)
+        }).catch(err => {
+          reject(err)
+        })
+      })
+    },
+
+    // 用户登出
+    Logout ({ commit, state }) {
+      removeAll()
+      commit('SET_TOKEN', '')
+      commit('SET_UUID', '')
+      commit('SET_USERNAME', '')
+      commit('SET_ROLE', '')
+      commit('SET_EXT_INFO', {})
+      router.push({ path: '/login' })
     }
   }
 }
 
 export default user
-
-export function aaa () {
-  console.log(111)
-  user.state = {
-    ext_info: {},
-    register_ip: '',
-    register_time: '',
-    role: '',
-    rolename: '',
-    username: '',
-    uuid: '',
-    token: ''
-  }
-  removeToken()
-  removeUuid()
-  removeRole()
-}

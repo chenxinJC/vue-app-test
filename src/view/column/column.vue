@@ -1,8 +1,10 @@
 <template>
-  <div>
-    column
-    <c-tab-bar></c-tab-bar>
-  </div>
+  <transition enter-active-class="fadeIn"
+    leave-active-class="fadeOut">
+    <div class="animated">
+      bbbbbbbbbbbbbbbbbbbbbbbbb
+    </div>
+  </transition>
 </template>
 
 <script>
@@ -20,4 +22,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.column {
+  width: 100%;
+  position: absolute;
+  top: 46px;
+  bottom: 55px;
+}
 </style>

@@ -1,0 +1,98 @@
+<template>
+  <!-- <transition :enter-active-class="enterAnimate" -->
+  <!-- :leave-active-class="leaveAnimate"> -->
+  <div>
+    <x-header class="header"
+      title="设置"></x-header>
+    <div class="set-content">
+      <group>
+        <cell class="userInfo"
+          :title="user.name"
+          is-link
+          link="/extInfo">
+          <img class="userimg"
+            :src="user.img"
+            slot="icon">
+        </cell>
+        <cell title="修改密码"
+          is-link
+          link="/alterPassword">
+        </cell>
+      </group>
+      <div class="logout">
+        <x-button
+        type="warn"
+        @click.native="logout">
+        退出
+      </x-button>
+      </div>
+    </div>
+  </div>
+  <!-- </transition> -->
+</template>
+
+<script>
+import { XHeader, Group, Cell, XButton } from 'vux'
+export default {
+  name: 'setUp',
+  components: {
+    XHeader,
+    Group,
+    Cell,
+    XButton
+  },
+  data () {
+    return {
+      user: {
+        name: this.$store.getters.extInfo.name || '',
+        img: this.$store.getters.extInfo.img || require('../../assets/user.jpg')
+      }
+    }
+  },
+  methods: {
+    logout () {
+      let vm = this
+      this.$vux.confirm.show({
+        content: '确定要退出吗？',
+        onCancel () {
+          console.log(vm)
+        },
+        onConfirm () {
+          vm.$store.dispatch('Logout')
+        }
+      })
+    }
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+@import "src/assets/styles/mixins.scss";
+.animated {
+  background: #f6f6f6;
+  z-index: 1;
+}
+.fadeOut {
+  animation-delay: 0.3s;
+}
+.set-content {
+  padding-top: px2rem(46);
+  /deep/ .weui-cell {
+    height: px2rem(32);
+    padding-top: px2rem(8);
+    padding-bottom: px2rem(8);
+    &:before {
+      left: 0;
+    }
+  }
+}
+.userimg {
+  width: px2rem(32);
+  margin-right: px2rem(10);
+  border-radius: 50%;
+  border: 1px solid #eaeaea;
+}
+.logout {
+  margin: px2rem(20) px2rem(15);
+}
+</style>

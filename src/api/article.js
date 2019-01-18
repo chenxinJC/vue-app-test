@@ -23,13 +23,13 @@ export function getArticle () {
   })
 }
 
-export function getArticleDetails () {
+export function getArticleDetails (id, uuid) {
   const url = 'api/'
   const data = {
     s: 'App.Table.Get',
     model_name: 'okayapi_article',
-    id: '2',
-    uuid: '0D567DEAC7DAE319DC63A4FA715AB0F4',
+    id,
+    uuid,
     app_key: APP_KEY
   }
   data.sign = setSign(data)

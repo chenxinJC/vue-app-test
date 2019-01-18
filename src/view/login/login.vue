@@ -1,63 +1,65 @@
 <template>
-  <div class="login">
-    <div class="logo">
-      <img src="../../assets/logo.png"
-        alt="">
+  <transition enter-active-class="fadeIn"
+    leave-active-class="fadeOut">
+    <div class="login animated">
+      <div class="logo">
+        <img src="../../assets/logo.png"
+          alt="">
+      </div>
+      <div class="form">
+        <group class="group">
+          <x-input class="input"
+            ref="username"
+            required
+            :max=20
+            @on-change="keyDown"
+            placeholder="请输入用户名..."
+            v-model="userInfo.username">
+            <span class="icon"
+              slot="label">
+              <i class="iconfont icon-user"></i>
+            </span>
+          </x-input>
+          <x-input class="input"
+            ref="password"
+            title=""
+            required
+            :min=6
+            :max=16
+            @on-change="keyDown"
+            :type="pwdType"
+            placeholder="请输入密码..."
+            autocomplete="off"
+            v-model="userInfo.password">
+            <span class="icon"
+              slot="label">
+              <i class="iconfont icon-password"></i>
+            </span>
+            <span class="showpw"
+              slot="right"
+              @click="changeType">
+              <i class="iconfont icon-eye"
+                :style="{ color: pwdColor }"></i>
+            </span>
+          </x-input>
+          <x-button class="sign-in"
+            :disabled="disabled"
+            type="primary"
+            @click.native="signIn()">
+            <span class="btn-loading"
+              v-if="loading">
+              <img src="../../assets/tail-spin.svg">加载中
+            </span>
+            <span v-else>登录</span>
+          </x-button>
+          <div class="other">
+            <router-link to="/forgetPassword">忘记密码</router-link>
+            <router-link to="/register">用户注册</router-link>
+          </div>
+        </group>
+      </div>
     </div>
-    <div class="form">
-      <group class="group">
-        <x-input class="input"
-          ref="username"
-          title=""
-          required
-          :max=20
-          @on-change="keyDown"
-          placeholder="请输入用户名..."
-          v-model="userInfo.username">
-          <span class="icon"
-            slot="label">
-            <i class="iconfont icon-user"></i>
-          </span>
-        </x-input>
-        <x-input class="input"
-          ref="password"
-          title=""
-          required
-          :min=6
-          :max=16
-          @on-change="keyDown"
-          :type="pwdType"
-          placeholder="请输入密码..."
-          autocomplete="off"
-          v-model="userInfo.password">
-          <span class="icon"
-            slot="label">
-            <i class="iconfont icon-password"></i>
-          </span>
-          <span class="showpw"
-            slot="right"
-            @click="changeType">
-            <i class="iconfont icon-eye"
-              :style="{ color: pwdColor }"></i>
-          </span>
-        </x-input>
-        <x-button class="sign-in"
-          :disabled="disabled"
-          type="primary"
-          @click.native="signIn()">
-          <span class="btn-loading"
-            v-if="loading">
-            <img src="../../assets/tail-spin.svg">加载中
-          </span>
-          <span v-else>登录</span>
-        </x-button>
-        <div class="other">
-          <router-link to="/forgetPassword">忘记密码</router-link>
-          <router-link to="/register">用户注册</router-link>
-        </div>
-      </group>
-    </div>
-  </div>
+  </transition>
 </template>
 
 <script>
@@ -120,33 +122,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "src/assets/styles/color.scss";
-@import "src/assets/styles/mixins.scss";
+@import "src/assets/styles/form_01.scss";
 body,
 /deep/ html {
   background: #fff !important;
 }
-.form /deep/ {
-  .weui-cells:before,
-  .weui-cells:after,
-  .weui-cell:before {
-    border-width: 0;
-  }
-  .weui-cell {
-    background: #f2f2f2;
-  }
-  .weui-btn:after {
-    border-width: 0;
-  }
-  .weui-btn_primary {
-    background: $default_color;
-  }
-  .weui-btn_disabled.weui-btn_primary {
-    background: $default_light_color;
-  }
-  .weui-btn_primary:not(.weui-btn_disabled):active {
-    background: $default_dark_color;
-  }
+.animated {
+  z-index: 1;
 }
 .logo {
   padding-top: 20%;
@@ -191,16 +173,6 @@ body,
   i {
     display: block;
     font-size: px2rem(24);
-  }
-}
-.btn-loading {
-  height: px2rem(16);
-  line-height: px2rem(16);
-  font-size: px2rem(14);
-  img {
-    height: px2rem(16);
-    margin-right: px2rem(8);
-    vertical-align: middle;
   }
 }
 .other {

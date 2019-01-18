@@ -1,35 +1,47 @@
 <template>
-  <div>
-    <x-header class="header"
-      title="个人中心"
-      :style="backStyle"
-      :left-options="{showBack: false}">
-      <i class="fa fa-search"
-        slot="right"></i>
-    </x-header>
-    <div class="user-box">
-      <div class="user-info">
-        <img src="../../assets/logo.png"
-          alt="">
-        <h3 class="user-name">任务二玩儿</h3>
-        <p class="user-msg">玩儿玩儿特台湾</p>
+  <!-- <transition enter-active-class="fadeIn" -->
+    <!-- leave-active-class="fadeOut"> -->
+    <div class="">
+      <x-header class="header"
+        title="个人中心"
+        :left-options="{showBack: false}">
+        <i class="fa fa-search"
+          slot="right"></i>
+      </x-header>
+      <div class="user-box">
+        <div class="user-info">
+          <img :src="user.img">
+          <h3 class="user-name">{{user.name}}</h3>
+          <p class="user-msg">{{user.msg}}</p>
+        </div>
+      </div>
+      <div>
+        <group>
+          <cell title="设置" is-link link="/setUp">
+            <i class="fa fa-cog" slot="icon"></i>
+          </cell>
+        </group>
       </div>
     </div>
-    <c-tab-bar></c-tab-bar>
-  </div>
+  <!-- </transition> -->
 </template>
 
 <script>
-import { XHeader } from 'vux'
-import CTabBar from 'components/c-tabBar'
+import { XHeader, Group, Cell } from 'vux'
 export default {
   name: 'my',
   components: {
     XHeader,
-    CTabBar
+    Group,
+    Cell
   },
   data () {
     return {
+      user: {
+        name: this.$store.getters.extInfo.name || '',
+        msg: this.$store.getters.extInfo.msg || '你想说的话',
+        img: this.$store.getters.extInfo.img || require('../../assets/user.jpg')
+      }
     }
   },
   mounted () {
@@ -48,10 +60,23 @@ export default {
 <style lang="scss" scoped>
 @import "src/assets/styles/mixins.scss";
 @import "src/assets/styles/color.scss";
+/deep/ .weui-cell__hd{
+  @include flex-center;
+  margin-right: px2rem(10);
+  .fa {
+    font-size: px2rem(20);
+    color: #5890eb;
+  }
+}
+.animated{
+  bottom: px2rem(46);
+  background: #f6f6f6;
+}
 .user-box {
   @include flex-center;
-  position: fixed;
-  top: px2rem(46);
+  // position: fixed;
+  // top: px2rem(45);
+  margin-top: px2rem(46);
   width: 100%;
   height: px2rem(130);
   padding-bottom: px2rem(10);
@@ -64,8 +89,10 @@ export default {
   img {
     width: px2rem(64);
     height: px2rem(64);
+    border: px2rem(2) solid #fff;
     border-radius: 50%;
-    background: #f3f3f3;
+    box-sizing: border-box;
+    background: #fff;
   }
   .user-name {
     margin: 10px auto 8px;
@@ -77,6 +104,9 @@ export default {
     font-size: px2rem(12);
     text-align: center;
     opacity: 0.64;
+  }
+  .fa {
+    width: 20px;
   }
 }
 </style>

@@ -1,7 +1,8 @@
 import request from 'utils/request'
+import md5 from 'js-md5'
 import {
   APP_KEY,
-  setSign
+  getparams
 } from './config'
 
 export function login (username, password) {
@@ -10,6 +11,20 @@ export function login (username, password) {
     app_key: APP_KEY,
     username,
     password
+  }
+  return request({
+    url: 'api/',
+    method: 'post',
+    data: getparams(data)
+  })
+}
+
+export function register (username, password) {
+  const data = {
+    s: 'App.User.Register',
+    app_key: APP_KEY,
+    username,
+    password: md5(password)
   }
   return request({
     url: 'api/',
@@ -32,12 +47,26 @@ export function getUserInfo (uuid, token) {
   })
 }
 
-export function setUserInfo (uuid, token, userData) {
-  let extInfo = JSON.stringify(userData)
+export function alterPassword (username, oldPassword, newPassword) {
   const data = {
-    s: 'App.User.Profile',
+    s: 'App.User.alterPassword',
     app_key: APP_KEY,
-    ext_info: extInfo,
+    username,
+    old_password: md5(oldPassword),
+    new_password: md5(newPassword)
+  }
+  return request({
+    url: 'api/',
+    method: 'post',
+    data: getparams(data)
+  })
+}
+
+export function updateExtInfo (uuid, token, userData) {
+  const data = {
+    s: 'App.User.UpdateExtInfo',
+    app_key: APP_KEY,
+    ext_info: JSON.stringify(userData),
     uuid,
     token
   }
@@ -60,13 +89,4 @@ export function getUserStatus (uuid, token) {
     method: 'post',
     data: getparams(data)
   })
-}
-
-export function getparams (data) {
-  data.sign = setSign(data)
-  let params = new URLSearchParams()
-  for (let k in data) {
-    params.append(k, data[k])
-  }
-  return params
 }

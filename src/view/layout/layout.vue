@@ -2,40 +2,30 @@
   <transition enter-active-class="fadeIn"
     leave-active-class="fadeOut">
     <div class="animated">
-      aaaaaaaaaaaaaaaaaaaaaa
+      <keep-alive>
+        <router-view />
+      </keep-alive>
+      <c-tab-bar></c-tab-bar>
     </div>
   </transition>
 </template>
 
 <script>
-import Scroll from 'components/scroll'
 import CTabBar from 'components/c-tabBar'
 export default {
-  name: 'course',
+  name: 'layout',
   components: {
-    CTabBar,
-    Scroll
+    CTabBar
   },
   data () {
     return {
     }
-  },
-  mounted () {
-  },
-  methods: {
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.course {
-  width: 100%;
-  position: absolute;
-  top: 46px;
-  bottom: 55px;
-}
-.wrapper {
-  width: 100%;
-  height: 100%;
+.fadeOut {
+  animation-delay: 0.3s;
 }
 </style>

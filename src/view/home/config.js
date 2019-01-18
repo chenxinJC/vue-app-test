@@ -24,7 +24,7 @@ export const bannerSwiperOptions = {
         let img = slide.children[0]
         let progress = slide.progress
         let asd = 1 - Math.min(Math.abs(progress), 1) / 10
-        console.log('==========', asd)
+        // console.log('==========', asd)
         slide.style.opacity = Math.round((1 - Math.min(Math.abs(progress / 2), 1)) * 10) / 10
         slide.style.height = asd * 100 + '%'
         slide.style.top = (1 - asd) / 2 * swiperHeight + 'px'

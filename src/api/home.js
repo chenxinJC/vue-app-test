@@ -4,8 +4,9 @@ import {
   setSign
 } from './config'
 
+const url = 'api/'
+
 export function getBanner () {
-  const url = 'api/'
   const data = {
     s: 'App.Table.FreeQuery',
     model_name: 'home_banner',
@@ -23,7 +24,6 @@ export function getBanner () {
 }
 
 export function getQuickAccess () {
-  const url = 'api/'
   const data = {
     s: 'App.Table.FreeQuery',
     model_name: 'home_quickAccess',
@@ -41,7 +41,6 @@ export function getQuickAccess () {
 }
 
 export function getRecommend () {
-  const url = 'api/'
   const data = {
     s: 'App.Table.FreeQuery',
     model_name: 'home_quickAccess',

@@ -22,3 +22,13 @@ export function setSign (obj) {
   var s = keys.join('') + APP_SECRECT
   return md5(s).toLocaleUpperCase()
 }
+
+/* post -- 数据params */
+export function getparams (data) {
+  data.sign = setSign(data)
+  let params = new URLSearchParams()
+  for (let k in data) {
+    params.append(k, data[k])
+  }
+  return params
+}

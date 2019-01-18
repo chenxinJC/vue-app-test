@@ -32,6 +32,8 @@ service.interceptors.response.use(
       // 这里写清除token的代码
       store.state.user.token = ''
       localStorage.removeItem('currentUser_token')
+      store.state.user.role = ''
+      localStorage.removeItem('currentUser_role')
       router.replace({ path: '/login' })
       app.$vux.toast.show({
         type: 'warn',
@@ -52,6 +54,8 @@ service.interceptors.response.use(
           // 这里写清除token的代码
           store.state.user.token = ''
           localStorage.removeItem('currentUser_token')
+          store.state.user.role = ''
+          localStorage.removeItem('currentUser_role')
           router.replace({
             path: 'login',
             query: {
