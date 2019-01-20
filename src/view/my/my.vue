@@ -12,7 +12,7 @@
         <div class="user-info">
           <img :src="user.img">
           <h3 class="user-name">{{user.name}}</h3>
-          <p class="user-msg">{{user.msg}}</p>
+          <p class="user-msg">{{user.msg.length > 20 ? user.msg.slice(0, 20) + "..." : user.msg}}</p>
         </div>
       </div>
       <div>

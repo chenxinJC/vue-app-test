@@ -49,6 +49,8 @@ export default {
       }
     }
   },
+  mounted () {
+  },
   methods: {
     logout () {
       let vm = this

@@ -1,64 +1,111 @@
 <template>
   <div>
+    <input type="file"
+      class="inputer"
+      ref="inputer"
+      accept='image/*'
+      value=""
+      @input="selectImg"
+      style="display: none">
+    <div v-if="loading"
+      class="loading">
+      <spinner type="lines"></spinner>
+    </div>
     <x-header class="header"
-      @click.native="aa"
-      title="个人信息"></x-header>
-    <vueCropper ref="cropper"
-      :img="option.img"
-      :outputSize="option.size"
-      :outputType="option.outputType"
-      :autoCrop="option.autoCrop"
-      :autoCropWidth="option.autoCropWidth"
-      :autoCropHeight="option.autoCropHeight"
-      :fixedBox="option.fixedBox"
-      :canMoveBox="option.canMoveBox"
-      :centerBox="option.centerBox"></vueCropper>
-      <img class="dd" :src="img" />
+      title="个人信息">
+      <span slot="right"
+        @click="submit">保存</span>
+    </x-header>
+    <div class="form">
+      <group>
+        <cell title="头像"
+          is-link
+          @click.native="fileClick">
+          <img class="userImg"
+            :src="extInfo.img"
+            alt="">
+        </cell>
+        <x-input title="昵称"
+          text-align="right"
+          v-model="extInfo.name"></x-input>
+        <x-input title="个性签名"
+          text-align="right"
+          v-model="extInfo.msg"></x-input>
+      </group>
+    </div>
+    <transition enter-active-class="slideInRight"
+      leave-active-class="slideOutRight">
+      <c-cropper class="animated"
+        v-show="cropperShow"
+        :img="file"
+        @result="getImg"></c-cropper>
+    </transition>
   </div>
 </template>
 
 <script>
-import { XHeader, Group, Cell, XInput, XButton } from 'vux'
-import { VueCropper } from 'vue-cropper'
+import { XHeader, Group, Cell, XInput, XButton, Spinner } from 'vux'
+import CCropper from './c-cropper.vue'
+import { updateExtInfo } from 'api/user'
+import { setExtInfo } from 'utils/auto'
+import { cToast } from 'utils/toast'
 export default {
   name: 'extInfo',
   components: {
-    VueCropper,
+    CCropper,
     XHeader,
     Group,
     Cell,
     XInput,
-    XButton
+    XButton,
+    Spinner
   },
   data () {
     return {
-      img: '',
-      option: {
-        img: '//bpic.588ku.com/templet_water_img/18/12/23/672f80c40a85c106b49b7600e035b902.jpg!/fw/800/unsharp/true/compress/true',
-        size: 1,
-        outputType: 'jpeg',
-        autoCrop: true,
-        autoCropWidth: 200,
-        autoCropHeight: 200,
-        fixedBox: true,
-        canMoveBox: false,
-        centerBox: true
+      loading: false,
+      file: '',
+      cropperShow: false,
+      extInfo: {
+        name: this.$store.getters.extInfo.name,
+        age: this.$store.getters.extInfo.age,
+        msg: this.$store.getters.extInfo.msg,
+        img: this.$store.getters.extInfo.img || require('@/assets/user.jpg')
       }
     }
   },
   mounted () {
   },
   methods: {
-    aa () {
-      this.$refs.cropper.startCrop()
-      this.$refs.cropper.getCropData((data) => {
-        // do something
-        this.img = data
-        console.log(data)
-      })
-      this.$refs.cropper.getCropBlob((data) => {
-        // do something
-        console.log(data)
+    fileClick () {
+      this.$refs.inputer.click()
+    },
+    selectImg () {
+      var URL = window.URL || window.webkitURL
+      var files = this.$refs.inputer.files[0]
+      var blobURL = URL.createObjectURL(files)
+      this.file = blobURL
+      this.cropperShow = true
+      this.$refs.inputer.value = ''
+    },
+    getImg (res, b) {
+      console.log(res)
+      this.extInfo.img = res.url
+      this.loading = b
+    },
+    submit () {
+      console.log(222, this.extInfo.msg)
+      this.loading = true
+      let uuid = this.$store.getters.uuid
+      let token = this.$store.getters.token
+      updateExtInfo(uuid, token, this.extInfo).then(res => {
+        console.log(res)
+        this.$store.state.user.ext_info = res.ext_info
+        setExtInfo(res.ext_info)
+        this.loading = false
+        cToast(res, '保存成功')
+        setTimeout(() => {
+          this.$router.go(-1)
+        }, 2000)
       })
     }
   }
@@ -66,13 +113,32 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "src/assets/styles/mixins.scss";
+@import "src/assets/styles/color.scss";
 .animated {
   z-index: 2;
 }
-.dd {
+.form {
+  margin-top: px2rem(46);
+}
+.fadeInRight {
+  transform: translateX(-350px);
+}
+.userImg {
+  width: px2rem(32);
+  height: px2rem(32);
+  border-radius: 50%;
+  border: px2rem(1) solid #ccc;
+}
+.loading {
   position: absolute;
   top: 0;
   left: 0;
-  z-index: 99;
+  width: 100%;
+  height: 100%;
+  @include flex-center;
+  /deep/ .vux-spinner {
+    stroke: $default_color;
+  }
 }
 </style>

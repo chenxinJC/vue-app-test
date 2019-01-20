@@ -74,6 +74,8 @@ export function updateExtInfo (uuid, token, userData) {
     url: 'api/',
     method: 'post',
     data: getparams(data)
+  }).then((res) => {
+    return Promise.resolve(res.data.data)
   })
 }
 

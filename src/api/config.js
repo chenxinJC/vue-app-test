@@ -32,3 +32,13 @@ export function getparams (data) {
   }
   return params
 }
+
+/* post -- 数据formData */
+export function getFormData (data) {
+  data.sign = setSign(data)
+  let formData = new FormData()
+  for (let k in data) {
+    formData.append(k, data[k])
+  }
+  return formData
+}
