@@ -94,7 +94,7 @@ import QuickAccess from './components/quickAccess'
 import CListOne from 'components/c-list/c-list_1'
 import CTabBar from 'components/c-tabBar'
 import PreviewArticle from 'components/preview/preview-article'
-import Like from 'components/like'
+import Like from 'components/like/index.vue'
 import Comment from 'components/comment'
 import { like } from 'components/like/index'
 import { getBanner, getQuickAccess } from 'api/home'
@@ -130,8 +130,21 @@ export default {
       articleRecommendList: []
     }
   },
-  activated () {
+  mounted () {
     this.getData()
+  },
+  computed: {
+    role () {
+      return this.$store.getters.role
+    }
+  },
+  watch: {
+    role (val, oldVal) {
+      console.log(val, oldVal)
+      if (val !== oldVal) {
+        this.getData()
+      }
+    }
   },
   methods: {
     getData () {

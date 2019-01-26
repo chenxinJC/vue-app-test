@@ -53,7 +53,7 @@ import { getLike } from 'api/like'
 import { XHeader } from 'vux'
 import Scroll from 'components/scroll'
 import Bottom from './bottom'
-import Like from 'components/like'
+import Like from 'components/like/index.vue'
 import { like } from 'components/like/index'
 export default {
   name: 'echarts',
