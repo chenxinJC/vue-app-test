@@ -1,28 +1,36 @@
 <template>
   <!-- <transition enter-active-class="fadeIn" -->
-    <!-- leave-active-class="fadeOut"> -->
-    <div class="">
-      <x-header class="header"
-        title="个人中心"
-        :left-options="{showBack: false}">
-        <i class="fa fa-search"
-          slot="right"></i>
-      </x-header>
-      <div class="user-box">
-        <div class="user-info">
-          <img :src="user.img">
+  <!-- leave-active-class="fadeOut"> -->
+  <div class="">
+    <x-header class="header"
+      title="个人中心"
+      :left-options="{showBack: false}">
+      <i class="fa fa-search"
+        slot="right"></i>
+    </x-header>
+    <div class="user-box">
+      <div class="user-info">
+        <img :src="user.img">
+        <router-link v-if="!$store.getters.extInfo.name"
+          class="user-name"
+          to="/login">点击登录</router-link>
+        <div v-else>
           <h3 class="user-name">{{user.name}}</h3>
           <p class="user-msg">{{user.msg.length > 20 ? user.msg.slice(0, 20) + "..." : user.msg}}</p>
         </div>
       </div>
-      <div>
-        <group>
-          <cell title="设置" is-link link="/setUp">
-            <i class="fa fa-cog" slot="icon"></i>
-          </cell>
-        </group>
-      </div>
     </div>
+    <div>
+      <group>
+        <cell title="设置"
+          is-link
+          link="/setUp">
+          <i class="fa fa-cog"
+            slot="icon"></i>
+        </cell>
+      </group>
+    </div>
+  </div>
   <!-- </transition> -->
 </template>
 
@@ -44,14 +52,21 @@ export default {
       }
     }
   },
+  activated () {
+    console.log(this.$store.getters.extInfo.name)
+    this.user.name = this.$store.getters.extInfo.name || ''
+    this.user.img = this.$store.getters.extInfo.img || require('../../assets/user.jpg')
+  },
   mounted () {
     this.getUserInfo()
   },
   methods: {
     getUserInfo () {
-      this.$store.dispatch('GetUserInfo').then(res => {
-        console.log(res)
-      })
+      if (this.$store.getters.uuid.length > 0) {
+        this.$store.dispatch('GetUserInfo').then(res => {
+          console.log(res)
+        })
+      }
     }
   }
 }
@@ -60,7 +75,7 @@ export default {
 <style lang="scss" scoped>
 @import "src/assets/styles/mixins.scss";
 @import "src/assets/styles/color.scss";
-/deep/ .weui-cell__hd{
+/deep/ .weui-cell__hd {
   @include flex-center;
   margin-right: px2rem(10);
   .fa {
@@ -68,7 +83,7 @@ export default {
     color: #5890eb;
   }
 }
-.animated{
+.animated {
   bottom: px2rem(46);
   background: #f6f6f6;
 }
@@ -99,6 +114,7 @@ export default {
     font-size: px2rem(16);
     font-weight: 700;
     text-align: center;
+    color: #fff;
   }
   .user-msg {
     font-size: px2rem(12);

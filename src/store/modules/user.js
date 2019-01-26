@@ -1,6 +1,6 @@
 import md5 from 'js-md5'
 import {ERR_OK} from 'api/config'
-import router from '../../router/index'
+// import router from '../../router/index'
 import {
   login,
   getUserInfo,
@@ -151,7 +151,7 @@ const user = {
       commit('SET_USERNAME', '')
       commit('SET_ROLE', '')
       commit('SET_EXT_INFO', {})
-      router.push({ path: '/login' })
+      // router.push({ path: '/login' })
     }
   }
 }

@@ -9,7 +9,8 @@
         <cell class="userInfo"
           :title="user.name"
           is-link
-          link="/extInfo">
+          :link="user.name === '' ? '/login' : '/extInfo'">
+          <span v-if="user.name === ''">点击登录</span>
           <img class="userimg"
             :src="user.img"
             slot="icon">
@@ -19,12 +20,12 @@
           link="/alterPassword">
         </cell>
       </group>
-      <div class="logout">
-        <x-button
-        type="warn"
-        @click.native="logout">
-        退出
-      </x-button>
+      <div class="logout"
+        v-if="user.name.length > 0">
+        <x-button type="warn"
+          @click.native="logout">
+          退出
+        </x-button>
       </div>
     </div>
   </div>
@@ -49,7 +50,10 @@ export default {
       }
     }
   },
-  mounted () {
+  activated () {
+    console.log(this.$store.getters.extInfo.name)
+    this.user.name = this.$store.getters.extInfo.name || ''
+    this.user.img = this.$store.getters.extInfo.img || require('../../assets/user.jpg')
   },
   methods: {
     logout () {
@@ -60,6 +64,8 @@ export default {
           console.log(vm)
         },
         onConfirm () {
+          vm.user.name = ''
+          vm.user.img = require('../../assets/user.jpg')
           vm.$store.dispatch('Logout')
         }
       })

@@ -49,8 +49,35 @@
               <h3>推荐文章</h3>
               <p class="more">查看更多</p>
             </div>
-            <c-list-two :list="articleRecommendList"
-              @toLink="goToArticle"></c-list-two>
+            <div class="list">
+              <preview-article v-for="item in articleRecommendList"
+                :key="item.id"
+                :data="item"
+                @click.native="goToArticle(item.id)">
+                <like slot="agree"
+                  type="agree"
+                  iconDefault="fa-thumbs-up"
+                  iconSelect="fa-thumbs-o-up"
+                  color="#2196f3"
+                  :state="item.agreeState"
+                  :num="item.agreeNum"
+                  :pid="item.id"
+                  :id="item.agreeID"
+                  @like="like"></like>
+                <like slot="collect"
+                  type="collect"
+                  iconDefault="fa-heart"
+                  iconSelect="fa-heart-o"
+                  color="#fd3737"
+                  :state="item.collectState"
+                  :num="item.collectNum"
+                  :pid="item.id"
+                  :id="item.collectID"
+                  @like="like"></like>
+                <like slot="comment"
+                  type="comment"></like>
+              </preview-article>
+            </div>
           </div>
         </div>
       </scroll>
@@ -65,12 +92,15 @@ import CSwiper from 'components/c-swiper'
 import CLoading from 'components/c-loading'
 import QuickAccess from './components/quickAccess'
 import CListOne from 'components/c-list/c-list_1'
-import CListTwo from 'components/c-list/c-list_2'
 import CTabBar from 'components/c-tabBar'
-// import Grid from './components/grid.vue'
+import PreviewArticle from 'components/preview/preview-article'
+import Like from 'components/like'
+import Comment from 'components/comment'
+import { like } from 'components/like/index'
 import { getBanner, getQuickAccess } from 'api/home'
 import { getCourse } from 'api/course'
 import { getArticle } from 'api/article'
+import { getLike } from 'api/like'
 import { bannerSwiperOptions } from './config'
 export default {
   name: 'home',
@@ -81,8 +111,10 @@ export default {
     CSwiper,
     QuickAccess,
     CListOne,
-    CListTwo,
-    CTabBar
+    CTabBar,
+    PreviewArticle,
+    Like,
+    Comment
   },
   data () {
     return {
@@ -99,21 +131,12 @@ export default {
     }
   },
   activated () {
-    // document.body.setAttribute('class', 'f6f6f6')
-    // window.addEventListener('scroll', this.handleScroll)
-  },
-  deactivated () {
-    // document.body.removeAttribute('class', 'f6f6f6')
-    // window.removeEventListener('scroll', this.handleScroll)
-  },
-  mounted () {
     this.getData()
-    // this.handleScroll()
   },
   methods: {
     getData () {
       this.loading = true
-      Promise.all([getBanner(), getQuickAccess(), getCourse(), getArticle()]).then(res => {
+      Promise.all([getBanner(), getQuickAccess(), getCourse(), this.GetArticle()]).then(res => {
         console.log(res)
         this.loading = false
         this.banner = res[0].data.list
@@ -124,10 +147,29 @@ export default {
         this.$refs.quickAccess.initSwiper()
       })
     },
+    // 获取推荐文章数据
+    GetArticle () {
+      return new Promise((resolve, reject) => {
+        Promise.all([getArticle(), getLike('okayapi_article_agree'), getLike('okayapi_article_collect')]).then(res => {
+          console.log(res)
+          let a1 = res[0].data.list
+          let a2 = res[1].data.list || []
+          let a3 = res[2].data.list || []
+          let aryAgree = []
+          let aryCollect = []
+          this.gl(a1, a2, aryAgree, 'agree')
+          this.gl(a1, a3, aryCollect, 'collect')
+          this.gl2(a1, a2, aryAgree, 'agree')
+          this.gl2(a1, a3, aryCollect, 'collect')
+          resolve(res[0])
+        })
+      })
+    },
+    // 根据id跳转文章详情页面
     goToArticle (id) {
-      console.log(1, id)
       this.$router.push({ path: '/article/' + id })
     },
+    // 头部样式过渡
     scroll (pos) {
       let y = pos.y
       if (y >= -10 && y <= 0) {
@@ -139,6 +181,47 @@ export default {
         this.backStyle = {
           color: '#fff',
           background: '#41b883'
+        }
+      }
+    },
+    // 点赞
+    like (type, state, num, pid, id) {
+      let data
+      for (let i = 0; i < this.articleRecommendList.length; i++) {
+        if (this.articleRecommendList[i].id === pid) {
+          data = this.articleRecommendList[i]
+        }
+      }
+      let modelName
+      if (type === 'agree') {
+        modelName = 'okayapi_article_agree'
+      } else if (type === 'collect') {
+        modelName = 'okayapi_article_collect'
+      }
+      like(type, state, num, pid, id, data, modelName)
+    },
+    gl (ary1, ary2, newary, type) {
+      if (ary2.length > 0) {
+        for (let i = 0; i < ary2.length; i++) {
+          newary.push(ary2[i].message_key)
+        }
+      } else {
+        for (let i = 0; i < ary1.length; i++) {
+          ary1[i][type + 'State'] = '0'
+        }
+      }
+    },
+    gl2 (ary1, ary2, newary, type) {
+      for (let i = 0; i < ary1.length; i++) {
+        if (newary.indexOf(ary1[i].id) > -1) {
+          ary1[i][type + 'ID'] = ary2[newary.indexOf(ary1[i].id)].id
+          if (Number(ary2[newary.indexOf(ary1[i].id)].state) === 1) {
+            ary1[i][type + 'State'] = '1'
+          } else {
+            ary1[i][type + 'State'] = '0'
+          }
+        } else {
+          ary1[i][type + 'State'] = '0'
         }
       }
     }
@@ -194,6 +277,9 @@ export default {
       font-size: px2rem(12);
       color: #8a8a8a;
     }
+  }
+  .list {
+    padding: 0 px2rem(15);
   }
 }
 </style>

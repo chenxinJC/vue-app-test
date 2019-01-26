@@ -1,22 +1,22 @@
 <template>
   <div class="container">
     <ul class="border-top">
-      <router-link to="/home"
+      <router-link to="/home" replace
         tag="li">
         <i class="fa fa-home"> </i>
         <span>首页</span>
       </router-link>
-      <router-link to="/course"
+      <router-link to="/course" replace
         tag="li">
         <i class="fa fa-book"> </i>
         <span>课程</span>
       </router-link>
-      <router-link to="/column"
+      <router-link to="/column" replace
         tag="li">
         <i class="fa fa-bookmark"> </i>
         <span>专栏</span>
       </router-link>
-      <router-link to="/my"
+      <router-link to="/my" replace
         tag="li">
         <i class="fa fa-user"> </i>
         <span>我的</span>

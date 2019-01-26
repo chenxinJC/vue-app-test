@@ -2,6 +2,10 @@
   <transition enter-active-class="fadeIn"
     leave-active-class="fadeOut">
     <div class="login animated">
+      <x-icon type="ios-close-empty"
+        class="icon-back"
+        size="36"
+        @click.native="back"></x-icon>
       <div class="logo">
         <img src="../../assets/logo.png"
           alt="">
@@ -63,10 +67,11 @@
 </template>
 
 <script>
-import { Group, XInput, XButton, InlineLoading } from 'vux'
+import { XHeader, Group, XInput, XButton, InlineLoading } from 'vux'
 export default {
   name: 'login',
   components: {
+    XHeader,
     Group,
     XInput,
     XButton,
@@ -89,8 +94,13 @@ export default {
       if (this.userInfo.namename !== '' && this.userInfo.password !== '') {
         this.loading = true
         this.disabled = true
-        this.$store.dispatch('Login', this.userInfo).then(() => {
-          this.$router.push({ path: '/' })
+        this.$store.dispatch('Login', this.userInfo).then(res => {
+          return this.$store.dispatch('GetUserInfo')
+        }).then(res => {
+          // console.log(this.$store.state.navigation.routes[this.$store.state.navigation.routes.length - 2])
+          this.$router.go(-1)
+          // this.$router.replace({path: 'setUp'})
+          // this.$router.push({path: '/setUp', query: {VNK: 'bd839595'}})
           this.loading = false
           this.disabled = false
         }).catch(() => {
@@ -116,6 +126,9 @@ export default {
         this.pwdType = 'password'
         this.pwdColor = '#B2B2B2'
       }
+    },
+    back () {
+      this.$router.go(-1)
     }
   }
 }
@@ -123,12 +136,19 @@ export default {
 
 <style lang="scss" scoped>
 @import "src/assets/styles/form_01.scss";
+@import "src/assets/styles/mixins.scss";
 body,
 /deep/ html {
   background: #fff !important;
 }
 .animated {
   z-index: 1;
+}
+.icon-back {
+  padding: px2rem(5);
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 .logo {
   padding-top: 20%;

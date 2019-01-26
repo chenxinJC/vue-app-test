@@ -15,8 +15,8 @@
 
 <script>
 import CTabBar from 'components/c-tabBar'
-const fadeIn = ['/login', '/home', '/course', '/column', '/my']
-const fadeInUp = ['/register', '/forgetPassword']
+const fadeIn = ['/home', '/course', '/column', '/my']
+const fadeInUp = ['/login', '/register', '/forgetPassword']
 export default {
   name: 'App',
   components: {
@@ -31,6 +31,7 @@ export default {
   created () {
     // bind event
     this.$navigation.on('forward', (to, from) => {
+      console.log(this.$navigation.getRoutes())
       this.leaveAnimate = 'fadeOut'
       if (fadeIn.indexOf(to.route.path) > -1) {
         this.enterAnimate = 'fadeIn'
@@ -39,9 +40,10 @@ export default {
       } else {
         this.enterAnimate = 'slideInRight'
       }
-      // console.log('forward to', to.route, 'from ', from.route)
+      console.log('forward to', to.route, 'from ', from.route)
     })
     this.$navigation.on('back', (to, from) => {
+      console.log(this.$navigation.getRoutes())
       this.enterAnimate = 'fadeIn'
       if (fadeIn.indexOf(from.route.path) > -1) {
         this.leaveAnimate = 'fadeOut'
@@ -50,7 +52,19 @@ export default {
       } else {
         this.leaveAnimate = 'slideOutRight'
       }
-      // console.log('back to', to.route, 'from ', from.route)
+      console.log('back to', to.route, 'from ', from.route)
+    })
+    this.$navigation.on('replace', (to, from) => {
+      console.log(this.$navigation.getRoutes())
+      if (fadeIn.indexOf(to.route.path) > -1) {
+        this.enterAnimate = 'fadeIn'
+        this.leaveAnimate = 'fadeOut'
+      }
+      if (from.route.path === '/login') {
+        this.enterAnimate = 'fadeIn'
+        this.leaveAnimate = 'slideOutDown'
+      }
+      console.log('replace to', to, 'from ', from)
     })
   },
   methods: {

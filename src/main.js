@@ -9,6 +9,7 @@ import Navigation from 'vue-navigation'
 import echarts from 'echarts'
 import { ToastPlugin, ConfirmPlugin } from 'vux'
 import animate from 'animate.css'
+import { fs } from 'utils/auto'
 // import axios from 'axios'
 // import apiConfig from '../config/api.config'
 
@@ -18,30 +19,39 @@ import 'swiper/dist/css/swiper.min.css'
 
 Vue.config.productionTip = false
 Vue.prototype.$echarts = echarts
+Vue.prototype.$fs = fs
 // axios.defaults.baseURL = apiConfig.baseUrl
 Vue.use(Navigation, {router, store})
 Vue.use(animate)
 Vue.use(ToastPlugin)
 Vue.use(ConfirmPlugin)
 
-const whiteList = ['/login', '/forgetPassword', '/register'] // 不重定向白名单
+const whiteList = [] // 不重定向白名单
 router.beforeEach((to, from, next) => {
+  console.log(to, from)
+  // let v = store.state.navigation.routes.splice(store.state.navigation.routes.length - 1, 1)
+  // console.log(from.query.VNK, v)
+  // if (to.name === from.name && from.query.VNK === v) {
+  // console.log(store.state.navigation.routes.splice(store.state.navigation.routes.length - 1, 1).splice('?')[1])
+  // }
   if (store.getters.token && store.getters.token !== 'undefined') { // 判断是否有token
     if (to.path === '/login') {
       next({ path: '/' })
     } else {
-      if (store.getters.role === null || store.getters.role === '') {
+      /* if (store.getters.role === null || store.getters.role === '') {
         store.dispatch('GetUserInfo').then(res => {
           console.log(111, res.data.data)
         })
       } else {
         store.dispatch('GetUserStatus').then(res => {
         })
-      }
+      } */
+      store.dispatch('GetUserStatus').then(res => {
+      })
       next()
     }
   } else {
-    if (whiteList.indexOf(to.path) !== -1) { // 在免登录白名单，直接进入
+    if (whiteList.indexOf(to.path) === -1) { // 在免登录白名单，直接进入
       next()
     } else {
       next('/login') // 否则全部重定向到登录页

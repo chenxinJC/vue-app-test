@@ -1,7 +1,8 @@
 import axios from 'axios'
 import {
   APP_KEY,
-  setSign
+  setSign,
+  getparams
 } from './config'
 
 export function getArticle () {
@@ -12,7 +13,6 @@ export function getArticle () {
     where: JSON.stringify([
       ['id', '>=', '0']
     ]),
-    // uuid: '0D567DEAC7DAE319DC63A4FA715AB0F4',
     app_key: APP_KEY
   }
   data.sign = setSign(data)
@@ -20,6 +20,39 @@ export function getArticle () {
     params: data
   }).then((res) => {
     return Promise.resolve(res.data)
+  })
+}
+
+export function changeArticle (id, changeField, changeValue) {
+  const data = {
+    s: 'App.Table.ChangeNumber',
+    model_name: 'okayapi_article',
+    id,
+    change_field: changeField,
+    change_value: changeValue,
+    app_key: APP_KEY
+  }
+  return axios({
+    url: 'api/',
+    method: 'post',
+    data: getparams(data)
+  })
+}
+
+export function updateArticle (id, d) {
+  const data = {
+    s: 'App.Table.FreeUpdate',
+    model_name: 'okayapi_article',
+    where: JSON.stringify([
+      ['id', '=', id]
+    ]),
+    data: JSON.stringify(d),
+    app_key: APP_KEY
+  }
+  return axios({
+    url: 'api/',
+    method: 'post',
+    data: getparams(data)
   })
 }
 
