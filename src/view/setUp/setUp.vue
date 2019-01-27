@@ -51,22 +51,23 @@ export default {
     }
   },
   activated () {
-    console.log(this.$store.getters.extInfo.name)
     this.user.name = this.$store.getters.extInfo.name || ''
     this.user.img = this.$store.getters.extInfo.img || require('../../assets/user.jpg')
   },
   methods: {
     logout () {
       let vm = this
+      this.$store.state.modal = true
       this.$vux.confirm.show({
         content: '确定要退出吗？',
         onCancel () {
-          console.log(vm)
+          vm.$store.state.modal = false
         },
         onConfirm () {
           vm.user.name = ''
           vm.user.img = require('../../assets/user.jpg')
           vm.$store.dispatch('Logout')
+          vm.$store.state.modal = false
         }
       })
     }

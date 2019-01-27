@@ -5,8 +5,6 @@
     <x-header class="header"
       title="个人中心"
       :left-options="{showBack: false}">
-      <i class="fa fa-search"
-        slot="right"></i>
     </x-header>
     <div class="user-box">
       <div class="user-info">
@@ -53,7 +51,6 @@ export default {
     }
   },
   activated () {
-    console.log(this.$store.getters.extInfo.name)
     this.user.name = this.$store.getters.extInfo.name || ''
     this.user.img = this.$store.getters.extInfo.img || require('../../assets/user.jpg')
   },

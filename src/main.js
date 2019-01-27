@@ -28,12 +28,12 @@ Vue.use(ConfirmPlugin)
 
 const whiteList = [] // 不重定向白名单
 router.beforeEach((to, from, next) => {
-  console.log(to, from)
-  // let v = store.state.navigation.routes.splice(store.state.navigation.routes.length - 1, 1)
-  // console.log(from.query.VNK, v)
-  // if (to.name === from.name && from.query.VNK === v) {
-  // console.log(store.state.navigation.routes.splice(store.state.navigation.routes.length - 1, 1).splice('?')[1])
-  // }
+  if (store.getters.modal) {
+    next(false)
+    store.state.modal = false
+    app.$vux.confirm.hide()
+    return
+  }
   if (store.getters.token && store.getters.token !== 'undefined') { // 判断是否有token
     if (to.path === '/login') {
       next({ path: '/' })

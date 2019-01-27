@@ -1,7 +1,5 @@
 const state = {
-  goBack: false,
-  enterAnimate: '',
-  leaveAnimate: ''
+  modal: false
 }
 
 export default state

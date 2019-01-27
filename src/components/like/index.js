@@ -6,7 +6,6 @@ import router from '../../router'
 export function like (type, state, num, pid, id, data, modelName) {
   let obj = {}
   obj[type + 'Num'] = num
-  console.log(store.getters.token.length > 0 && store.getters.uuid.length > 0 && store.getters.role.length > 0)
   if (store.getters.token.length > 0 && store.getters.uuid.length > 0 && store.getters.role.length > 0) {
     if (id) {
       Promise.all([likeUpdate(modelName, id, { state }), updateArticle(pid, obj)]).then(res => {
@@ -19,7 +18,6 @@ export function like (type, state, num, pid, id, data, modelName) {
       })
     } else {
       Promise.all([likeCreate(modelName, { message_key: pid, state }), updateArticle(pid, obj)]).then(res => {
-        console.log(res)
         let r1 = res[0].data.data
         let r2 = res[1].data.data
         if (r1.err_code === 0 && r2.err_code === 0) {
@@ -30,7 +28,6 @@ export function like (type, state, num, pid, id, data, modelName) {
       })
     }
   } else {
-    console.log(1)
     router.push('/login')
   }
 }
