@@ -1,7 +1,10 @@
 import request from 'utils/request'
+import axios from 'axios'
 import md5 from 'js-md5'
 import {
+  URL,
   APP_KEY,
+  setSign,
   getparams
 } from './config'
 
@@ -13,7 +16,7 @@ export function login (username, password) {
     password
   }
   return request({
-    url: 'api/',
+    url: URL,
     method: 'post',
     data: getparams(data)
   })
@@ -27,7 +30,7 @@ export function register (username, password) {
     password: md5(password)
   }
   return request({
-    url: 'api/',
+    url: URL,
     method: 'post',
     data: getparams(data)
   })
@@ -41,7 +44,7 @@ export function getUserInfo (uuid, token) {
     token
   }
   return request({
-    url: 'api/',
+    url: URL,
     method: 'post',
     data: getparams(data)
   })
@@ -56,7 +59,7 @@ export function alterPassword (username, oldPassword, newPassword) {
     new_password: md5(newPassword)
   }
   return request({
-    url: 'api/',
+    url: URL,
     method: 'post',
     data: getparams(data)
   })
@@ -71,7 +74,7 @@ export function updateExtInfo (uuid, token, userData) {
     token
   }
   return request({
-    url: 'api/',
+    url: URL,
     method: 'post',
     data: getparams(data)
   }).then((res) => {
@@ -87,8 +90,21 @@ export function getUserStatus (uuid, token) {
     token
   }
   return request({
-    url: 'api/',
+    url: URL,
     method: 'post',
     data: getparams(data)
+  })
+}
+
+export function nickname () {
+  const data = {
+    s: 'App.Common_Nickname.RandOne',
+    app_key: APP_KEY
+  }
+  data.sign = setSign(data)
+  return axios.get(URL, {
+    params: data
+  }).then((res) => {
+    return Promise.resolve(res.data)
   })
 }

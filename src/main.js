@@ -8,6 +8,7 @@ import Navigation from 'vue-navigation'
 // import { GetUserInfo, GetUserStatus } from './store/modules/user'
 import echarts from 'echarts'
 import { ToastPlugin, ConfirmPlugin } from 'vux'
+import { nickname, updateExtInfo } from 'api/user'
 import animate from 'animate.css'
 import { fs } from 'utils/auto'
 // import axios from 'axios'
@@ -38,16 +39,23 @@ router.beforeEach((to, from, next) => {
     if (to.path === '/login') {
       next({ path: '/' })
     } else {
-      /* if (store.getters.role === null || store.getters.role === '') {
-        store.dispatch('GetUserInfo').then(res => {
-          console.log(111, res.data.data)
+      if (store.getters.role === null || store.getters.role === '') {
+        store.dispatch('GetUserInfo').then(res => { // 获取用户信息
+          if (!res.data.data.info.ext_info.name) {
+            return nickname()
+          }
+        }).then(res => {
+          if (res && res.data.err_code === 0) {
+            return updateExtInfo(store.getters.uuid, store.getters.token, {name: res.data.nickname})
+          }
+        }).then(res => {
+          if (res && res.err_code === 0) {
+            return store.dispatch('GetUserInfo')
+          }
         })
       } else {
-        store.dispatch('GetUserStatus').then(res => {
-        })
-      } */
-      store.dispatch('GetUserStatus').then(res => {
-      })
+        store.dispatch('GetUserStatus').then(res => {})
+      }
       next()
     }
   } else {

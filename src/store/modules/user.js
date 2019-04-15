@@ -83,7 +83,7 @@ const user = {
           setUuid(uuid)
           setUsername(username)
           setPassword(password)
-          resolve()
+          resolve(res)
         }).catch(err => {
           reject(err)
         })

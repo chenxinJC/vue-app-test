@@ -95,10 +95,13 @@ export default {
         this.loading = true
         this.disabled = true
         this.$store.dispatch('Login', this.userInfo).then(res => {
-          return this.$store.dispatch('GetUserInfo')
+          console.log(res)
+          if (res.data.data.err_code === 0) {
+            this.$router.go(-1)
+            return this.$store.dispatch('GetUserInfo')
+          }
         }).then(res => {
           // console.log(this.$store.state.navigation.routes[this.$store.state.navigation.routes.length - 2])
-          this.$router.go(-1)
           // this.$router.replace({path: 'setUp'})
           // this.$router.push({path: '/setUp', query: {VNK: 'bd839595'}})
           this.loading = false
@@ -129,6 +132,9 @@ export default {
     },
     back () {
       this.$router.go(-1)
+    },
+    clear () {
+      console.log(111)
     }
   }
 }
@@ -142,7 +148,7 @@ body,
   background: #fff !important;
 }
 .animated {
-  z-index: 1;
+  z-index: 7;
 }
 .icon-back {
   padding: px2rem(5);

@@ -1,22 +1,21 @@
 <template>
-  <transition enter-active-class="fadeIn"
-    leave-active-class="fadeOut">
-    <div class="animated">
-      bbbbbbbbbbbbbbbbbbbbbbbbb
-    </div>
-  </transition>
+  <div>
+    bbbbbbbbbbbbbbbbbbbbbbbbb
+  </div>
 </template>
 
 <script>
-import CTabBar from 'components/c-tabBar'
+import axios from 'axios'
 export default {
   name: 'column',
-  components: {
-    CTabBar
-  },
   data () {
     return {
     }
+  },
+  mounted () {
+    axios.get('/asd/finance/stock/hs?gid=sh601009&key=9ab786fa46ad56341c0142066cc7000e').then((res) => {
+      console.log(res)
+    })
   }
 }
 </script>

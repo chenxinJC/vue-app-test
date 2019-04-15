@@ -50,12 +50,16 @@ export default {
       }
     }
   },
-  activated () {
+  mounted () {
     this.user.name = this.$store.getters.extInfo.name || ''
     this.user.img = this.$store.getters.extInfo.img || require('../../assets/user.jpg')
-  },
-  mounted () {
     this.getUserInfo()
+  },
+  watch: {
+    '$store.getters.extInfo' (val) {
+      this.user.name = val.name ? val.name : ''
+      this.user.img = val.img ? val.img : require('../../assets/user.jpg')
+    }
   },
   methods: {
     getUserInfo () {

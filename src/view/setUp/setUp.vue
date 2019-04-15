@@ -50,9 +50,15 @@ export default {
       }
     }
   },
-  activated () {
+  mounted () {
     this.user.name = this.$store.getters.extInfo.name || ''
     this.user.img = this.$store.getters.extInfo.img || require('../../assets/user.jpg')
+  },
+  watch: {
+    '$store.getters.extInfo' (val) {
+      this.user.name = val.name ? val.name : ''
+      this.user.img = val.img ? val.img : require('../../assets/user.jpg')
+    }
   },
   methods: {
     logout () {
@@ -64,8 +70,6 @@ export default {
           vm.$store.state.modal = false
         },
         onConfirm () {
-          vm.user.name = ''
-          vm.user.img = require('../../assets/user.jpg')
           vm.$store.dispatch('Logout')
           vm.$store.state.modal = false
         }

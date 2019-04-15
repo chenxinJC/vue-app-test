@@ -5,7 +5,7 @@
       <span class="fa fa-commenting"
         :style="{fontSize: this.iconSize + 'px'}"></span>
       <span class="num"
-        :style="{fontSize: this.textSize + 'px'}">{{num}}</span>
+        :style="{fontSize: this.textSize + 'px'}">{{count}}</span>
     </div>
     <div v-else>
       <span class="fa"
@@ -19,6 +19,7 @@
 
 <script>
 import { fs } from 'utils/auto'
+import { commentCount } from 'api/comment'
 export default {
   name: 'agree',
   props: {
@@ -55,18 +56,47 @@ export default {
     textSize: {
       type: Number,
       default: fs(12)
+    },
+    paramsType: {
+      type: String,
+      default: ''
+    }
+  },
+  data () {
+    return {
+      count: this.num
+    }
+  },
+  watch: {
+    'pid' (val) {
+      this.pid = val
+      if (this.type === 'comment') {
+        this.getCount()
+      }
+    }
+  },
+  mounted () {
+    if (this.type === 'comment' && Number(this.pid) > 0) {
+      this.getCount()
     }
   },
   methods: {
     like () {
+      console.log(this.type)
       if (this.type === 'comment') {
-        // this.$router.push({ path: '/comment/' + this.type })
+        this.$router.push({ path: '/comment/' + this.paramsType + '/' + this.pid })
       } else {
         let state = Number(this.state) ? '0' : '1'
         let num = Number(this.state) ? String(Number(this.num) - 1) : String(Number(this.num) + 1)
         console.log(`type:${this.type}   state:${state}   num:${num}   pid:${this.pid}   id:${this.id}`)
         this.$emit('like', this.type, state, num, this.pid, this.id)
       }
+    },
+    getCount () {
+      commentCount(this.pid).then(res => {
+        console.log(res)
+        this.count = res.data.total + ''
+      })
     }
   }
 }

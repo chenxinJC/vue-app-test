@@ -1,6 +1,7 @@
 import request from 'utils/request'
 import axios from 'axios'
 import {
+  URL,
   APP_KEY,
   setSign,
   getparams
@@ -17,7 +18,7 @@ export function likeCreate (modelName, d) {
     token: store.getters.token
   }
   return request({
-    url: 'api/',
+    url: URL,
     method: 'post',
     data: getparams(data)
   })
@@ -34,7 +35,7 @@ export function likeCheckCreate (modelName, d, field) {
     token: store.getters.token
   }
   return request({
-    url: 'api/',
+    url: URL,
     method: 'post',
     data: getparams(data)
   })
@@ -51,7 +52,7 @@ export function likeUpdate (modelName, id, d) {
     token: store.getters.token
   }
   return request({
-    url: 'api/',
+    url: URL,
     method: 'post',
     data: getparams(data)
   })
@@ -75,7 +76,7 @@ export function getLike (modelName, key, val) {
     ])
   }
   data.sign = setSign(data)
-  return axios.get('api/', {
+  return axios.get(URL, {
     params: data
   }).then((res) => {
     return Promise.resolve(res.data)
@@ -92,7 +93,7 @@ export function likeDelete (modelName, id) {
     token: store.getters.token
   }
   return request({
-    url: 'api/',
+    url: URL,
     method: 'post',
     data: getparams(data)
   })
@@ -110,7 +111,7 @@ export function likedeleteAll (modelName) {
     ])
   }
   return request({
-    url: 'api/',
+    url: URL,
     method: 'post',
     data: getparams(data)
   })

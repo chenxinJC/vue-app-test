@@ -5,7 +5,7 @@
       ref="inputer"
       accept='image/*'
       value=""
-      @input="selectImg"
+      @change="selectImg"
       style="display: none">
     <div v-if="loading"
       class="loading">
@@ -80,11 +80,11 @@ export default {
       this.$refs.inputer.click()
     },
     selectImg () {
+      this.cropperShow = true
       var URL = window.URL || window.webkitURL
       var files = this.$refs.inputer.files[0]
       var blobURL = URL.createObjectURL(files)
       this.file = blobURL
-      this.cropperShow = true
       this.$refs.inputer.value = ''
     },
     getImg (res, b) {

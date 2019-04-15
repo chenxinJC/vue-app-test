@@ -11,6 +11,7 @@ import SetUp from 'view/setUp/setUp'
 import ExtInfo from 'view/user/extInfo'
 import AlterPassword from 'view/user/alterPassword'
 import Article from 'view/article/article'
+import Comment from 'view/comment/comment'
 
 Vue.use(Router)
 
@@ -18,14 +19,12 @@ export default new Router({
   routes: [
     {
       path: '/',
-      redirect: '/home',
-      children: [
-      ]
+      redirect: '/home'
     },
     {
       path: '/home',
       name: 'Home',
-      meta: {requireAuth: true, cTabBar: true},
+      meta: {cTabBar: true},
       component: Home
     },
     {
@@ -89,6 +88,11 @@ export default new Router({
       name: 'AlterPassword',
       meta: {requireAuth: true},
       component: AlterPassword
+    },
+    {
+      path: '/comment/:type/:id',
+      name: 'Comment',
+      component: Comment
     }
   ]
 })

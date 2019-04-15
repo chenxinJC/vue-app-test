@@ -2,7 +2,6 @@
   <div class="comment" @click.stop="comment">
     <span class="fa fa-commenting"></span>
     <span class="num">{{num}}</span>
-    <div class="box"></div>
   </div>
 </template>
 
@@ -21,7 +20,7 @@ export default {
   },
   methods: {
     comment () {
-
+      this.$router.push('')
     }
   }
 }
@@ -39,14 +38,5 @@ export default {
   .num {
     font-size: px2rem(12);
   }
-}
-.box {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 999999;
-  background: #fff;
 }
 </style>

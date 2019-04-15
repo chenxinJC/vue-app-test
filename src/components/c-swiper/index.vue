@@ -25,7 +25,7 @@ export default {
   },
   data () {
     return {
-      cSwiper: null
+      // cSwiper: null
     }
   },
   mounted () {
@@ -33,11 +33,13 @@ export default {
   },
   activated () {
     if (this.swiperDatas.length > 0) {
+      console.log('11111111111111111111111111')
       this.startSwiper()
     }
   },
   deactivated () {
     if (this.swiperDatas.length > 0) {
+      console.log('222222222222222222222222')
       this.stopSwiper()
     }
   },
@@ -45,16 +47,16 @@ export default {
     initSwiper () {
       this.$nextTick(() => {
         if (this.swiperDatas.length > 0) {
-          let mySwiper = new Swiper('.c-swiper', this.options)
-          this.cSwiper = mySwiper
+          this.mySwiper = new Swiper('.c-swiper', this.options)
+          // this.cSwiper = mySwiper
         }
       })
     },
     startSwiper () {
-      this.cSwiper.autoplay.start()
+      this.mySwiper.autoplay.start()
     },
     stopSwiper () {
-      this.cSwiper.autoplay.stop()
+      this.mySwiper.autoplay.stop()
     }
   }
 }

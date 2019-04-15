@@ -1,88 +1,89 @@
 <template>
-  <transition enter-active-class="fadeIn"
-    leave-active-class="fadeOut">
-    <div class="animated">
-      <div class="loading"
-        v-show="loading">
-        <c-loading></c-loading>
-      </div>
-      <x-header class="header"
-        title="首页"
-        :style="backStyle"
-        :left-options="{showBack: false}">
-        <i class="fa fa-search"
-          slot="right"></i>
-      </x-header>
-      <scroll class=""
-        :probeType="3"
-        @scroll="scroll">
-        <div v-show="!loading">
-          <c-swiper class="banner"
-            ref="banner"
-            :options="bannerOption"
-            :swiper-datas="banner"></c-swiper>
+  <div class="home">
+    <div class="loading"
+      v-show="loading">
+      <c-loading></c-loading>
+    </div>
+    <x-header class="header"
+      title="首页"
+      :style="backStyle"
+      :left-options="{showBack: false}">
+      <i class="fa fa-search"
+        slot="right"></i>
+    </x-header>
+    <scroll class=""
+      :probeType="3"
+      @scroll="scroll">
+      <div v-show="!loading">
+        <c-swiper class="banner"
+          ref="banner"
+          :options="bannerOption"
+          :swiper-datas="banner"></c-swiper>
 
-          <div class="quick-access">
-            <quick-access ref="quickAccess"
-              :datas="quickAccess">
-            </quick-access>
+        <div class="quick-access">
+          <quick-access ref="quickAccess"
+            :datas="quickAccess">
+          </quick-access>
+        </div>
+
+        <div class="hot-recommend recommend">
+          <div class="top">
+            <h3>热门推荐</h3>
+            <p class="more">查看更多</p>
           </div>
+          <c-list-one :list="hotRecommendList"></c-list-one>
+        </div>
 
-          <div class="hot-recommend recommend">
-            <div class="top">
-              <h3>热门推荐</h3>
-              <p class="more">查看更多</p>
-            </div>
-            <c-list-one :list="hotRecommendList"></c-list-one>
+        <div class="latest-course recommend">
+          <div class="top">
+            <h3>最新课程</h3>
+            <p class="more">查看更多</p>
           </div>
+          <c-list-one :list="hotRecommendList"></c-list-one>
+        </div>
 
-          <div class="latest-course recommend">
-            <div class="top">
-              <h3>最新课程</h3>
-              <p class="more">查看更多</p>
-            </div>
-            <c-list-one :list="hotRecommendList"></c-list-one>
+        <div class="article-recommend recommend">
+          <div class="top">
+            <h3>推荐文章</h3>
+            <p class="more">查看更多</p>
           </div>
-
-          <div class="article-recommend recommend">
-            <div class="top">
-              <h3>推荐文章</h3>
-              <p class="more">查看更多</p>
-            </div>
-            <div class="list">
-              <preview-article v-for="item in articleRecommendList"
-                :key="item.id"
-                :data="item"
-                @click.native="goToArticle(item.id)">
-                <like slot="agree"
-                  type="agree"
-                  iconDefault="fa-thumbs-up"
-                  iconSelect="fa-thumbs-o-up"
-                  color="#2196f3"
-                  :state="item.agreeState"
-                  :num="item.agreeNum"
-                  :pid="item.id"
-                  :id="item.agreeID"
-                  @like="like"></like>
-                <like slot="collect"
-                  type="collect"
-                  iconDefault="fa-heart"
-                  iconSelect="fa-heart-o"
-                  color="#fd3737"
-                  :state="item.collectState"
-                  :num="item.collectNum"
-                  :pid="item.id"
-                  :id="item.collectID"
-                  @like="like"></like>
-                <like slot="comment"
-                  type="comment"></like>
-              </preview-article>
-            </div>
+          <div class="list">
+            <preview-article v-for="item in articleRecommendList"
+              :key="item.id"
+              :data="item"
+              @click.native="goToArticle(item.id)">
+              <like slot="agree"
+                type="agree"
+                iconDefault="fa-thumbs-up"
+                iconSelect="fa-thumbs-o-up"
+                color="#2196f3"
+                :state="item.agreeState"
+                :num="item.agreeNum"
+                :pid="item.id"
+                :id="item.agreeID"
+                @like="like"></like>
+              <like slot="collect"
+                type="collect"
+                iconDefault="fa-heart"
+                iconSelect="fa-heart-o"
+                color="#fd3737"
+                :state="item.collectState"
+                :num="item.collectNum"
+                :pid="item.id"
+                :id="item.collectID"
+                @like="like"></like>
+              <like slot="comment"
+                type="comment"
+                paramsType="article"
+                :num="item.commentNum"
+                :pid="item.id"
+                @like="like"></like>
+            </preview-article>
           </div>
         </div>
-      </scroll>
-    </div>
-  </transition>
+      </div>
+    </scroll>
+  </div>
 </template>
 
 <script>
@@ -127,11 +128,20 @@ export default {
       banner: [],
       quickAccess: [],
       hotRecommendList: [],
-      articleRecommendList: []
+      articleRecommendList: [],
+      asd: this.$store.getters.role
     }
   },
   mounted () {
     this.getData()
+  },
+  activated () {
+    if (this.asd !== this.$store.getters.role) {
+      this.asd = this.$store.getters.role
+      this.GetArticle().then(res => {
+        this.articleRecommendList = res.data.list
+      })
+    }
   },
   computed: {
     role () {
@@ -140,9 +150,10 @@ export default {
   },
   watch: {
     role (val, oldVal) {
-      console.log(val, oldVal)
-      if (val !== oldVal) {
-        this.getData()
+      if (val !== oldVal && this.$route.path === '/home') {
+        this.GetArticle().then(res => {
+          this.articleRecommendList = res.data.list
+        })
       }
     }
   },
@@ -270,6 +281,7 @@ export default {
   left: 0;
   right: 0;
   bottom: 0;
+  z-index: 1;
   @include flex-center;
 }
 .banner {

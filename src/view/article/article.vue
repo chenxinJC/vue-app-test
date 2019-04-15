@@ -42,6 +42,15 @@
         :iconSize="$fs(20)"
         :textSize="$fs(18)"
         @like="like"></like>
+      <like slot="comment"
+        type="comment"
+        paramsType="article"
+        :num="data.commentNum"
+        :pid="commentPid"
+        :id="data.commentID"
+        :iconSize="$fs(20)"
+        :textSize="$fs(18)"
+        @like="like"></like>
     </bottom>
   </div>
   <!-- </transition> -->
@@ -69,11 +78,24 @@ export default {
       title: '',
       content: '',
       agreeState: '',
-      collectState: ''
+      collectState: '',
+      commentPid: ''
     }
   },
   mounted () {
     this.getData()
+  },
+  computed: {
+    role () {
+      return this.$store.getters.role
+    }
+  },
+  watch: {
+    role (val, oldVal) {
+      if (val !== oldVal) {
+        this.getData()
+      }
+    }
   },
   methods: {
     getData () {
@@ -81,22 +103,32 @@ export default {
         this.data = res.data.data
         this.title = this.data.article_title
         this.content = this.data.article_content
-        return Promise.all([getLike('okayapi_article_agree', 'article_key', String(this.data.id)), getLike('okayapi_article_collect', 'article_key', String(this.data.id))])
+        return Promise.all([getLike('okayapi_article_agree', 'message_key', String(this.data.id)), getLike('okayapi_article_collect', 'message_key', String(this.data.id))])
       }).then(res => {
-        let r1 = res[0].data.list[0]
-        let r2 = res[1].data.list[0]
         if (res[0].data.err_code === 0 && res[1].data.err_code === 0) {
-          this.data.agreeID = r1.id
-          this.data.agreeState = r1.state
-          this.data.collectID = r2.id
-          this.data.collectState = r2.state
+          let r1 = res[0].data
+          let r2 = res[1].data
+          if (r1.list.length > 0) {
+            this.data.agreeID = r1.list[0].id
+            this.data.agreeState = r1.list[0].state
+          } else {
+            this.data.agreeState = '0'
+          }
+          if (r2.list.length > 0) {
+            this.data.collectID = r2.list[0].id
+            this.data.collectState = r2.list[0].state
+          } else {
+            this.data.collectState = '0'
+          }
         } else {
           this.data.agreeState = '0'
           this.data.collectState = '0'
         }
         this.agreeState = this.data.agreeState
         this.collectState = this.data.collectState
-        console.log(this.data)
+        this.commentPid = this.data.id + ''
+        console.log(this.commentPid)
+        console.log('文章数据', this.data)
       })
     },
     like (type, state, num, pid, id) {

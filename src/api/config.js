@@ -2,6 +2,8 @@ import md5 from 'js-md5'
 
 export const ERR_OK = 0
 
+export const URL = 'api/'
+
 /* app_key */
 export const APP_KEY = '87238C4CC32ED34A328C9BEB90EFCEBD'
 
