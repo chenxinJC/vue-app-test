@@ -1,6 +1,4 @@
 <template>
-  <!-- <transition :enter-active-class="enterAnimate" -->
-  <!-- :leave-active-class="leaveAnimate"> -->
   <div>
     <x-header class="header"
       title="设置"></x-header>
@@ -29,7 +27,6 @@
       </div>
     </div>
   </div>
-  <!-- </transition> -->
 </template>
 
 <script>

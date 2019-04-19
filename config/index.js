@@ -17,14 +17,7 @@ module.exports = {
         pathRewrite: {
           '^/api': '/'
         }
-      },
-      '/asd/**': {
-        target: 'http://web.juhe.cn:8080',
-        changeOrigin: true,
-        pathRewrite: {
-          '^/asd': '/'
-        }
-      },
+      }
     },
 
     // Various Dev Server settings
@@ -65,7 +58,7 @@ module.exports = {
     // Paths
     assetsRoot: path.resolve(__dirname, '../dist'),
     assetsSubDirectory: 'static',
-    assetsPublicPath: './',
+    assetsPublicPath: '/',
 
     /**
      * Source Maps

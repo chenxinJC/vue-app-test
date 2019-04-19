@@ -33,13 +33,13 @@ export default {
   },
   activated () {
     if (this.swiperDatas.length > 0) {
-      console.log('11111111111111111111111111')
+      // console.log('11111111111111111111111111')
       this.startSwiper()
     }
   },
   deactivated () {
     if (this.swiperDatas.length > 0) {
-      console.log('222222222222222222222222')
+      // console.log('222222222222222222222222')
       this.stopSwiper()
     }
   },

@@ -4,6 +4,7 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import store from './store/index'
+import axios from 'axios'
 import Navigation from 'vue-navigation'
 // import { GetUserInfo, GetUserStatus } from './store/modules/user'
 import echarts from 'echarts'
@@ -11,6 +12,11 @@ import { ToastPlugin, ConfirmPlugin } from 'vux'
 import { nickname, updateExtInfo } from 'api/user'
 import animate from 'animate.css'
 import { fs } from 'utils/auto'
+
+import VueVideoPlayer from 'vue-video-player'
+import 'video.js/dist/video-js.css'
+import 'vue-video-player/src/custom-theme.css'
+
 // import axios from 'axios'
 // import apiConfig from '../config/api.config'
 
@@ -18,6 +24,7 @@ import 'assets/styles/font-awesome.min.css'
 import 'assets/styles/global.scss'
 import 'swiper/dist/css/swiper.min.css'
 
+axios.defaults.baseURL = process.env.API_ROOT
 Vue.config.productionTip = false
 Vue.prototype.$echarts = echarts
 Vue.prototype.$fs = fs
@@ -26,6 +33,7 @@ Vue.use(Navigation, {router, store})
 Vue.use(animate)
 Vue.use(ToastPlugin)
 Vue.use(ConfirmPlugin)
+Vue.use(VueVideoPlayer)
 
 const whiteList = [] // 不重定向白名单
 router.beforeEach((to, from, next) => {

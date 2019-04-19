@@ -4,7 +4,7 @@ import {
   setSign
 } from './config'
 
-export function getCourse () {
+export function getCourse (id) {
   const url = 'api/'
   const data = {
     s: 'App.Table.FreeQuery',
@@ -13,6 +13,11 @@ export function getCourse () {
       ['id', '>=', '0']
     ]),
     app_key: APP_KEY
+  }
+  if (id) {
+    data.where = JSON.stringify([
+      ['id', '=', id]
+    ])
   }
   data.sign = setSign(data)
   let aryList

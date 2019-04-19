@@ -9,11 +9,10 @@
       @pulldown="getData">
       <div class="srcoll-content"
         ref="sc">
-        <div v-if="list.length === 0"
-          class="no-data">暂无评论，赶紧来添加几条吧...</div>
-        <div v-else
-          class="list">
-          <div class="item border-bottom"
+        <div class="list">
+          <div v-if="list.length === 0 && olist === null"
+            class="no-data">暂无评论，赶紧来添加几条吧...</div>
+          <div v-else class="item border-bottom"
             v-for="item in list"
             :key="item.id">
             <div class="img">
@@ -54,7 +53,7 @@
           <span slot="right"
             @click="submit">提交</span>
         </x-header>
-        <x-textarea class="content" v-model="msg" :height=300 placeholder="说说你的看法..." :autosize=true></x-textarea>
+        <x-textarea class="content" ref="textarea" v-model="msg" :height=300 placeholder="说说你的看法..." :autosize=true></x-textarea>
       </div>
     </transition>
   </div>
@@ -85,6 +84,13 @@ export default {
       setTimeout(() => {
         this.$refs.scrollRef.refresh()
       }, 40)
+    },
+    show (val) { // 当为true时，textarea自动获取焦点
+      if (val) {
+        setTimeout(() => {
+          this.$refs.textarea.focus()
+        }, 500)
+      }
     }
   },
   created () {
@@ -125,6 +131,15 @@ export default {
       })
     },
     submit () {
+      if (this.msg === '') {
+        this.$vux.toast.show({
+          type: 'text',
+          text: '内容不能为空',
+          width: 'auto',
+          position: 'middle'
+        })
+        return false
+      }
       let userInfo = this.$store.getters.extInfo
       let data = {
         message_key: this.$route.params.id,
@@ -217,11 +232,21 @@ export default {
   padding: px2rem(20);
 }
 .list {
-  background: #fff;
   .item {
     display: flex;
-    margin: 0 px2rem(15);
-    padding: px2rem(10) 0;
+    // margin: 0 px2rem(15);
+    padding: px2rem(10) px2rem(15);
+    background: #fff;
+    &:last-child:before {
+      width: 100%;
+      left: 0;
+      right: 0;
+    }
+    &:before {
+      width: auto;
+      left: px2rem(15);
+      right: px2rem(15);
+    }
     .img {
       flex: 0 0 px2rem(36);
       img {

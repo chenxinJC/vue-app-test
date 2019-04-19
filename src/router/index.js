@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Login from 'view/login/login'
 import Register from 'view/register/register'
 import ForgetPassword from 'view/forgetPassword/forgetPassword'
 import Home from 'view/home/home'
@@ -12,10 +11,13 @@ import ExtInfo from 'view/user/extInfo'
 import AlterPassword from 'view/user/alterPassword'
 import Article from 'view/article/article'
 import Comment from 'view/comment/comment'
+const Login = () => import('view/login/login')
+const CourseVideo = () => import('view/course/video')
 
 Vue.use(Router)
 
 export default new Router({
+  mode: 'history',
   routes: [
     {
       path: '/',
@@ -32,6 +34,11 @@ export default new Router({
       name: 'Course',
       meta: {requireAuth: true, cTabBar: true},
       component: Course
+    },
+    {
+      path: '/course/video/:id',
+      name: 'CourseVideo',
+      component: CourseVideo
     },
     {
       path: '/column',

@@ -1,8 +1,9 @@
 <template>
   <div class="container">
-    <div class="item"
+    <router-link class="item" tag="div"
       v-for="(item, index) in list"
-      :key="index">
+      :key="index"
+      :to="'course/video/' + item.id">
       <img class="item-img"
         :src="item.imgUrl">
       <div class="item-title">{{item.title}}</div>
@@ -22,7 +23,7 @@
           <p class="name">{{item.userName}}</p>
         </div>
       </div>
-    </div>
+    </router-link>
   </div>
 </template>
 
