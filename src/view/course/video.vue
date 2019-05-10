@@ -1,17 +1,17 @@
 <template>
   <div>
     <c-video class="video"
-      v-if="video.length>0 && img.length > 0"
+      v-if="videoInfo.imgUrl"
       ref="video"
-      :videoUrl="video"
-      :imgUrl="img"></c-video>
+      :videoUrl="videoInfo.videoUrl"
+      :imgUrl="videoInfo.imgUrl"></c-video>
     <div class="swiper-container"
       ref="nav"
       id="nav">
       <div class="swiper-wrapper">
         <div class="swiper-slide"
           @click="clickHandle(0)">
-          <span>介绍</span>
+          <span>简介</span>
         </div>
         <div class="swiper-slide"
           @click="clickHandle(1)">
@@ -28,7 +28,23 @@
       id="page">
       <div class="swiper-wrapper">
         <div class="swiper-slide">
-          1
+          <div class="container"
+            v-if="videoInfo.userName">
+            <div class="userInfo">
+              <img :src="videoInfo.userImgUrl"
+                alt="">
+              <div class="usr">
+                <h4>{{videoInfo.userName}}</h4>
+                <p>2.3万粉丝</p>
+              </div>
+              <div class="btn">
+                <button>关注</button>
+              </div>
+            </div>
+            <div class="content">
+              <h3>{{videoInfo.title}}</h3>
+            </div>
+          </div>
         </div>
         <div class="swiper-slide">
           2
@@ -53,7 +69,7 @@ export default {
   },
   data () {
     return {
-      video: '',
+      videoInfo: {},
       img: '',
       activeIndex: 0
     }
@@ -111,9 +127,8 @@ export default {
     },
     getData () {
       getCourse(this.$route.params.id).then(res => {
-        let data = res.data.list[0]
-        this.video = data.videoUrl
-        this.img = data.imgUrl
+        this.videoInfo = res.data.list[0]
+        console.log(this.videoInfo)
       })
     }
   }
@@ -122,6 +137,7 @@ export default {
 
 <style lang="scss" scoped>
 @import "src/assets/styles/mixins.scss";
+@import "src/assets/styles/color.scss";
 .animated {
   z-index: 1;
 }
@@ -166,7 +182,7 @@ export default {
       width: 40px;
       height: 100%;
       margin: 0 auto;
-      background: #f30;
+      background: $default_color;
     }
   }
 }
@@ -176,6 +192,46 @@ export default {
   bottom: 0;
   .swiper-slider {
     width: 100%;
+  }
+  .container{
+    padding: 0 px2rem(10);
+  }
+  .userInfo {
+    padding-top: px2rem(10);
+    height: px2rem(36);
+    display: flex;
+    .usr{
+      flex: 1;
+      padding: px2rem(2) 0;
+    }
+    img {
+      height: 100%;
+      margin-right: px2rem(4)
+    }
+    h4{
+      font-size: px2rem(14);
+      margin-bottom: px2rem(6)
+    }
+    p{
+      color: #aeaeae;
+    }
+    .btn{
+      width: px2rem(88);
+      @include flex-center;
+    }
+    button {
+      width: 100%;
+      height: 80%;
+      border-radius: 2px;
+      color: #fff;
+      background: $default_light_color;
+    }
+  }
+  .content {
+    margin-top: px2rem(20);
+    h3{
+      font-size: px2rem(16);
+    }
   }
 }
 </style>

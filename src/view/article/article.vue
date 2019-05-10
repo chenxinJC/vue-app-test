@@ -4,15 +4,13 @@
   <div>
     <x-header class="header"
       title="文章详情"></x-header>
-    <scroll class="scroll">
-      <div>
-        <div>
-          <h3 class="art-title">{{title}}</h3>
-          <div class="art-content"
-            v-html="content"></div>
-        </div>
+    <!-- <scroll class="scroll"> -->
+      <div class="scroll">
+        <h3 class="art-title">{{title}}</h3>
+        <div class="art-content"
+          v-html="content"></div>
       </div>
-    </scroll>
+    <!-- </scroll> -->
     <bottom>
       <like v-if="agreeState.length > 0"
         class="item"
@@ -151,13 +149,18 @@ export default {
 .animated {
   z-index: 2;
 }
+div.bottom {
+  position: fixed;
+}
 div.scroll {
   height: auto;
-  position: absolute;
-  top: px2rem(46);
-  bottom: px2rem(56);
+  margin-top: px2rem(46);
+  margin-bottom: px2rem(56);
+  // position: absolute;
+  // top: px2rem(46);
+  // bottom: px2rem(56);
   background: #fff;
-  overflow: hidden;
+  // overflow: hidden;
 }
 .art-content {
   /deep/ p {
